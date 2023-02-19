@@ -1,12 +1,8 @@
 package aa.weather.screens.location
 
-import aa.weather.screens.location.plugin.api.Plugin
-import aa.weather.screens.location.plugin.api.PluginConfiguration
-import aa.weather.screens.location.plugin.api.PluginRenderer
-import aa.weather.screens.location.plugin.api.PluginUIState
-import aa.weather.screens.location.plugin.forecast.daily.DailyForecastPlugin
-import aa.weather.screens.location.plugin.header.HeaderPlugin
+import aa.weather.screens.location.kernel.PluginManager
 import aa.weather.screens.location.state.ScreenState
+import aa.weather.screens.location.state.ScreenUIModel
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -42,7 +39,7 @@ class WeatherFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View =
 //        LinearLayout(container?.context ?: inflater.context).apply {
 //            layoutParams = ViewGroup.LayoutParams(
@@ -69,17 +66,17 @@ class WeatherFragment : Fragment() {
     @Composable
     private fun renderItems(s: ScreenState) {
         LazyColumn {
-            s.items.lastOrNull()?.also { df ->
-                item(key = df::class.java, contentType = df::class.java) {
-                    vm.renderer(df).render(df)
-                }
-            }
+            items(
+                s.items,
+                key = { it.itemKey },
+                contentType = { it.contentType },
+            ) { vm.getRenderer(it).render(it.model) }
         }
     }
 
     private fun renderState(
         view: View,
-        state: ScreenState
+        state: ScreenState,
     ) {
         (view as LinearLayout).apply {
             removeAllViews()
@@ -99,29 +96,33 @@ class WeatherFragment : Fragment() {
 }
 
 internal class WeatherViewModel @Inject constructor(
-    private val plugins: @JvmSuppressWildcards Set<Plugin<*>>,
+    private val pluginManager: PluginManager,
 ) : ViewModel() {
     private val scope = CoroutineScope(viewModelScope.coroutineContext + AndroidUiDispatcher.Main)
-    private val ordered = listOf(
-        plugins.first { it is HeaderPlugin },
-        plugins.first { it is DailyForecastPlugin },
-    )
 
     val state: StateFlow<ScreenState> by lazy(LazyThreadSafetyMode.NONE) {
-        val stateProviders = ordered
-            .map { (it as Plugin<PluginConfiguration?>).createStateProvider(null) }
+        val stateProviders = pluginManager.stateProviders
 
         scope.launchMolecule(RecompositionClock.ContextClock) {
             stateProviders
-                .mapNotNull { it.getState() }
+                .mapNotNull { (key, provider) -> provider.getState()?.let { key to it } }
+                .fold(mutableListOf<ScreenUIModel>()) { result, (key, state) ->
+                    state.items.mapTo(result) { model ->
+                        ScreenUIModel(
+                            pluginKey = key,
+                            itemKey = model.key ?: result.size,
+                            contentType = pluginManager.getRenderer(key)
+                                .getContentType(model) ?: model::class.java,
+                            model = model,
+                        )
+                    }
+                    result
+                }
                 .let { ScreenState("", it) }
         }
     }
 
-    fun renderer(state: PluginUIState) =
-        (ordered.last() as Plugin<PluginConfiguration?>)
-            .createRenderer(null)
-            .let { it as PluginRenderer<PluginUIState> }
+    fun getRenderer(model: ScreenUIModel) = pluginManager.getRenderer(model.pluginKey)
 
     override fun onCleared() {
         scope.cancel()

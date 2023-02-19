@@ -14,7 +14,7 @@ class DailyForecastPlugin @Inject internal constructor(
     override fun createStateProvider(config: DailyForecastConfiguration?): PluginUIStateProvider =
         DailyForecastUIStateProvider(
             repository,
-            config?.let { DailyForecastArguments(daysCount = it.daysCount) },
+            DailyForecastArguments(daysCount = config?.daysCount ?: 50),
         )
 
     override fun createRenderer(config: DailyForecastConfiguration?): PluginRenderer<*> =

@@ -5,12 +5,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
-internal class HeaderRenderer : PluginRenderer<HeaderUIState> {
+internal class HeaderRenderer : PluginRenderer<HeaderUIModel> {
     @Composable
-    override fun render(state: HeaderUIState) {
+    override fun render(model: HeaderUIModel) {
         Column {
-            Text(state.city)
-            Text(state.temperature)
+            Text(model.locationName)
+            Text(model.temperature)
+            Text(model.weatherConditions)
         }
     }
 }

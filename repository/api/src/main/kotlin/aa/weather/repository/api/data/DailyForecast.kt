@@ -23,5 +23,5 @@ data class Temperature(
 )
 
 data class DailyForecastArguments(
-    val daysCount: Int = 10,
+    val daysCount: Int,
 ) : Arguments

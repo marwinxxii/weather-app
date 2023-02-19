@@ -1,17 +1,16 @@
 package aa.weather.screens.location.state
 
-import aa.weather.screens.location.plugin.api.PluginUIState
-import aa.weather.screens.location.plugin.api.PluginUIStateProvider
-import androidx.compose.runtime.Composable
+import aa.weather.screens.location.kernel.PluginKey
+import aa.weather.screens.location.plugin.api.UIModel
 
 data class ScreenState(
     val locationId: String,
-    val items: List<PluginUIState>,
+    val items: List<ScreenUIModel>,
 )
 
-@Composable
-internal fun content(
-    providers: List<PluginUIStateProvider>
-): List<PluginUIState> {
-    return providers.mapNotNull { it.getState() }
-}
+data class ScreenUIModel(
+    val pluginKey: PluginKey,
+    val itemKey: Any,
+    val contentType: Any,
+    val model: UIModel,
+)

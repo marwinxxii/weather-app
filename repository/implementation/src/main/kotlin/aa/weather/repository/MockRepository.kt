@@ -5,7 +5,7 @@ import aa.weather.repository.api.DataRepository
 import aa.weather.repository.api.data.DailyForecast
 import aa.weather.repository.api.data.DailyForecastArguments
 import aa.weather.repository.api.data.DayForecast
-import aa.weather.repository.api.data.LocationWeather
+import aa.weather.repository.api.data.LocationLatestWeather
 import aa.weather.repository.api.data.ManagedData
 import aa.weather.repository.api.data.Temperature
 import aa.weather.repository.api.data.Weather
@@ -22,26 +22,38 @@ internal class MockRepository : DataRepository {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ManagedData> observe(cl: Class<T>, arguments: Arguments?): Flow<T> =
         when (cl) {
-            LocationWeather::class.java -> locationWeatherMock()
-            DailyForecast::class.java -> dailyForecastMock(arguments as DailyForecastArguments?)
+            LocationLatestWeather::class.java -> locationWeatherMock()
+            DailyForecast::class.java -> dailyForecastMock(arguments as DailyForecastArguments)
             else -> emptyFlow()
         } as Flow<T>
 
-    private fun locationWeatherMock(): Flow<LocationWeather> =
+    private fun locationWeatherMock(): Flow<LocationLatestWeather> =
         flow {
-            val initial = LocationWeather("Berlin", "24 C")
+            val initial = LocationLatestWeather(
+                locationName = "Berlin",
+                weather = setOf(Weather.CLOUDS),
+                currentTemperature = Temperature(24, "C", formatted = "24 C"),
+            )
             emit(initial)
             repeat(100) {
                 currentCoroutineContext().ensureActive()
+                println("Next weather: $it")
                 delay(5000)
-                emit(initial.copy(temperature = "${24 + it} C"))
+                emit(
+                    initial.copy(
+                        currentTemperature = initial.currentTemperature.copy(
+                            value = 24 + it,
+                            formatted = "${24 + it} C",
+                        ),
+                    )
+                )
             }
         }
 
-    private fun dailyForecastMock(arguments: DailyForecastArguments?) =
+    private fun dailyForecastMock(arguments: DailyForecastArguments) =
         flowOf(
             DailyForecast(
-                days = List(arguments?.daysCount ?: 10) {
+                days = List(arguments.daysCount) {
                     DayForecast(
                         weather = setOf(
                             Weather.CLOUDS,
