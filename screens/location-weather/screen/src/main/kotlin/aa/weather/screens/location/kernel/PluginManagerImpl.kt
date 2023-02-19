@@ -1,31 +1,22 @@
 package aa.weather.screens.location.kernel
 
-import aa.weather.screens.location.plugin.api.Plugin
-import aa.weather.screens.location.plugin.api.PluginConfiguration
 import aa.weather.screens.location.plugin.api.PluginRenderer
 import aa.weather.screens.location.plugin.api.PluginUIStateProvider
 import aa.weather.screens.location.plugin.api.UIModel
-import aa.weather.screens.location.plugin.forecast.daily.DailyForecastPlugin
-import aa.weather.screens.location.plugin.header.HeaderPlugin
-import javax.inject.Inject
 
-class PluginManagerImpl @Inject constructor(
-    private val plugins: @JvmSuppressWildcards Set<Plugin<*>>,
+internal class PluginManagerImpl(
+    private val plugins: List<ConfiguredPlugin<*>>,
 ) : PluginManager {
-    private val ordered = listOf(
-        "header" to plugins.first { it is HeaderPlugin } as Plugin<PluginConfiguration?>,
-        "daily forecast" to plugins.first { it is DailyForecastPlugin } as Plugin<PluginConfiguration?>,
-    )
+    private val renderers = mutableMapOf<PluginKey, PluginRenderer<*>>()
 
     override val stateProviders: List<Pair<PluginKey, PluginUIStateProvider>> =
-        ordered.map { (key, plugin) ->
-            key to plugin.createStateProvider(null)
-        }
+        plugins.map { it.key to it.stateProvider }
 
-    override fun getRenderer(pluginKey: PluginKey): PluginRenderer<UIModel> {
-        return (ordered.first { it.first == pluginKey })
-            .second
-            .createRenderer(null)
-            .let { it as PluginRenderer<UIModel> }
+    override fun getOrCreateRenderer(pluginKey: PluginKey): PluginRenderer<UIModel> {
+        val renderer = renderers.getOrPut(pluginKey) {
+            plugins.first { it.key == pluginKey }.renderer
+        }
+        @Suppress("UNCHECKED_CAST")
+        return renderer as PluginRenderer<UIModel>
     }
 }

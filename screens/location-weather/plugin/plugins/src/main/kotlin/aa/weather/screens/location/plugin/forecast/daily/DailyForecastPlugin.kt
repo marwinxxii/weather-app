@@ -10,14 +10,14 @@ import javax.inject.Inject
 
 class DailyForecastPlugin @Inject internal constructor(
     private val repository: DataRepository,
-) : Plugin<DailyForecastConfiguration?> {
-    override fun createStateProvider(config: DailyForecastConfiguration?): PluginUIStateProvider =
+) : Plugin<DailyForecastConfiguration> {
+    override fun createStateProvider(config: DailyForecastConfiguration): PluginUIStateProvider =
         DailyForecastUIStateProvider(
             repository,
-            DailyForecastArguments(daysCount = config?.daysCount ?: 50),
+            DailyForecastArguments(daysCount = config.daysCount),
         )
 
-    override fun createRenderer(config: DailyForecastConfiguration?): PluginRenderer<*> =
+    override fun createRenderer(config: DailyForecastConfiguration): PluginRenderer<*> =
         DailyForecastRenderer()
 }
 

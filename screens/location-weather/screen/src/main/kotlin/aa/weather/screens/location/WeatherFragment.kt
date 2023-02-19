@@ -111,7 +111,7 @@ internal class WeatherViewModel @Inject constructor(
                         ScreenUIModel(
                             pluginKey = key,
                             itemKey = model.key ?: result.size,
-                            contentType = pluginManager.getRenderer(key)
+                            contentType = pluginManager.getOrCreateRenderer(key)
                                 .getContentType(model) ?: model::class.java,
                             model = model,
                         )
@@ -122,7 +122,7 @@ internal class WeatherViewModel @Inject constructor(
         }
     }
 
-    fun getRenderer(model: ScreenUIModel) = pluginManager.getRenderer(model.pluginKey)
+    fun getRenderer(model: ScreenUIModel) = pluginManager.getOrCreateRenderer(model.pluginKey)
 
     override fun onCleared() {
         scope.cancel()
