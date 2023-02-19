@@ -1,7 +1,8 @@
 package aa.weather.app.screens.weather
 
 import aa.weather.repository.RepositoryModule
-import aa.weather.screens.location.plugin.header.HeaderPluginModule
+import aa.weather.screens.location.plugin.forecast.daily.DailyForecastModule
+import aa.weather.screens.location.plugin.header.HeaderModule
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.ViewModelInitializer
 import dagger.Component
@@ -11,9 +12,11 @@ import javax.inject.Provider
 
 @Component(
     modules = [
-        HeaderPluginModule::class,
         WeatherFragmentModule::class,
         RepositoryModule::class,
+        // plugins
+        HeaderModule::class,
+        DailyForecastModule::class,
     ],
 )
 interface WeatherFragmentComponent {

@@ -1,16 +1,19 @@
 package aa.weather.app.screens.weather
 
 import aa.weather.app.screens.weather.state.ScreenState
+import aa.weather.screens.location.plugin.api.Plugin
 import aa.weather.screens.location.plugin.api.PluginConfiguration
 import aa.weather.screens.location.plugin.api.PluginRenderer
 import aa.weather.screens.location.plugin.api.PluginUIState
+import aa.weather.screens.location.plugin.forecast.daily.DailyForecastPlugin
+import aa.weather.screens.location.plugin.header.HeaderPlugin
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -65,9 +68,11 @@ class WeatherFragment : Fragment() {
 
     @Composable
     private fun renderItems(s: ScreenState) {
-        Column {
-            for (i in s.items) {
-                vm.renderer(i).render(i)
+        LazyColumn {
+            s.items.lastOrNull()?.also { df ->
+                item(key = df::class.java, contentType = df::class.java) {
+                    vm.renderer(df).render(df)
+                }
             }
         }
     }
@@ -94,12 +99,17 @@ class WeatherFragment : Fragment() {
 }
 
 internal class WeatherViewModel @Inject constructor(
-    private val plugins: @JvmSuppressWildcards Set<PluginConfiguration>,
+    private val plugins: @JvmSuppressWildcards Set<Plugin<*>>,
 ) : ViewModel() {
     private val scope = CoroutineScope(viewModelScope.coroutineContext + AndroidUiDispatcher.Main)
+    private val ordered = listOf(
+        plugins.first { it is HeaderPlugin },
+        plugins.first { it is DailyForecastPlugin },
+    )
 
     val state: StateFlow<ScreenState> by lazy(LazyThreadSafetyMode.NONE) {
-        val stateProviders = plugins.map { it.state.value }
+        val stateProviders = ordered
+            .map { (it as Plugin<PluginConfiguration?>).createStateProvider(null) }
 
         scope.launchMolecule(RecompositionClock.ContextClock) {
             stateProviders
@@ -109,7 +119,9 @@ internal class WeatherViewModel @Inject constructor(
     }
 
     fun renderer(state: PluginUIState) =
-        plugins.first().ui.value as PluginRenderer<PluginUIState>
+        (ordered.last() as Plugin<PluginConfiguration?>)
+            .createRenderer(null)
+            .let { it as PluginRenderer<PluginUIState> }
 
     override fun onCleared() {
         scope.cancel()

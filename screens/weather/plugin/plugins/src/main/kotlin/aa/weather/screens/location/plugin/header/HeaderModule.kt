@@ -1,6 +1,6 @@
 package aa.weather.screens.location.plugin.header
 
-import aa.weather.screens.location.plugin.api.PluginConfiguration
+import aa.weather.screens.location.plugin.api.Plugin
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoSet
@@ -9,8 +9,8 @@ import dagger.multibindings.IntoSet
 private interface HeaderPluginPrivateModule {
     @Binds
     @IntoSet
-    fun bindHeaderPlugin(headerPluginConfiguration: HeaderPluginConfiguration): PluginConfiguration
+    fun bindPlugin(instance: HeaderPlugin): Plugin<*>
 }
 
 @Module(includes = [HeaderPluginPrivateModule::class])
-interface HeaderPluginModule
+interface HeaderModule
