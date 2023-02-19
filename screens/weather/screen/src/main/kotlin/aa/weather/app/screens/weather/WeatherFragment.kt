@@ -1,35 +1,33 @@
 package aa.weather.app.screens.weather
 
 import aa.weather.app.screens.weather.state.ScreenState
-import aa.weather.app.screens.weather.state.content
 import aa.weather.screens.location.plugin.api.PluginConfiguration
 import aa.weather.screens.location.plugin.api.PluginRenderer
 import aa.weather.screens.location.plugin.api.PluginUIState
 import android.os.Bundle
-import android.view.Choreographer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
-import app.cash.molecule.AndroidUiFrameClock
-import app.cash.molecule.RecompositionClock
-import app.cash.molecule.moleculeFlow
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewModelScope
+import app.cash.molecule.RecompositionClock
+import app.cash.molecule.launchMolecule
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 class WeatherFragment : Fragment() {
@@ -59,13 +57,17 @@ class WeatherFragment : Fragment() {
         DaggerWeatherFragmentComponent.create().inject(this)
         (view as ComposeView).setContent {
             MaterialTheme {
-                val s by vm.state.collectAsState(initial = ScreenState("", emptyList()))
-                for (i in s.items) {
-                    vm.renderer(i).render(i)
-                }
-//                    withContext(AndroidUiFrameClock(Choreographer.getInstance())) {
-//                        vm.state.collect { state -> renderState(view, state) }
-//                    }
+                val s by vm.state.collectAsStateWithLifecycle()
+                renderItems(s)
+            }
+        }
+    }
+
+    @Composable
+    private fun renderItems(s: ScreenState) {
+        Column {
+            for (i in s.items) {
+                vm.renderer(i).render(i)
             }
         }
     }
@@ -94,10 +96,22 @@ class WeatherFragment : Fragment() {
 internal class WeatherViewModel @Inject constructor(
     private val plugins: @JvmSuppressWildcards Set<PluginConfiguration>,
 ) : ViewModel() {
-    val state: Flow<ScreenState> = moleculeFlow(RecompositionClock.ContextClock) {
-        ScreenState("", content(providers = plugins.map { it.state.value }))
+    private val scope = CoroutineScope(viewModelScope.coroutineContext + AndroidUiDispatcher.Main)
+
+    val state: StateFlow<ScreenState> by lazy(LazyThreadSafetyMode.NONE) {
+        val stateProviders = plugins.map { it.state.value }
+
+        scope.launchMolecule(RecompositionClock.ContextClock) {
+            stateProviders
+                .mapNotNull { it.getState() }
+                .let { ScreenState("", it) }
+        }
     }
 
     fun renderer(state: PluginUIState) =
         plugins.first().ui.value as PluginRenderer<PluginUIState>
+
+    override fun onCleared() {
+        scope.cancel()
+    }
 }

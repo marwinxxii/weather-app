@@ -35,6 +35,9 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.ui:ui-tooling-preview")
     debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-beta01")
+
+    implementation(project(":repository:implementation"))
 
     testImplementation(kotlin("test"))
     //testImplementation("androidx.compose.ui:ui-test:1.3.3")

@@ -11,6 +11,7 @@ class HeaderPluginConfiguration @Inject internal constructor(
 ) : PluginConfiguration {
     override val key: PluginKey
         get() = TODO("Not yet implemented")
-    override val state: Lazy<PluginUIStateProvider> = lazy(headerStateProvider::get)
+    override val state: Lazy<PluginUIStateProvider> =
+        lazy(LazyThreadSafetyMode.NONE, headerStateProvider::get)
     override val ui: Lazy<PluginRenderer<*>> = lazy(::HeaderRenderer)
 }

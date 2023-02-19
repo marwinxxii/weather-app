@@ -14,6 +14,8 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Weather app"
+include(":repository:api")
+include(":repository:implementation")
 include(":screens:weather:plugin:api")
 include(":screens:weather:plugin:plugins")
 include(":screens:weather:screen")
