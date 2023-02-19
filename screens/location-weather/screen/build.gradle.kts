@@ -1,11 +1,12 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
+    id("app.cash.molecule")
     id("kotlin-kapt")
 }
 
 android {
-    namespace = "aa.weather.app.screens.weather.plugins"
+    namespace = "aa.weather.app.screens.weather"
     defaultConfig {
         compileSdk = 33
         minSdk = 24
@@ -19,21 +20,29 @@ android {
         kotlinCompilerExtensionVersion = "1.4.1"
     }
 
-    kotlinOptions {
-        jvmTarget = "1.8"
+    testOptions {
+        unitTests.isReturnDefaultValues = true
     }
 }
 
 dependencies {
     implementation("com.google.dagger:dagger:2.45")
     kapt("com.google.dagger:dagger-compiler:2.45")
-
-    api(project(":screens:weather:plugin:api"))
-    implementation(project(":repository:api"))
-
+    implementation("androidx.fragment:fragment-ktx:1.5.5")
+    implementation(project(":screens:location-weather:plugin:plugins"))
     val composeBom = platform("androidx.compose:compose-bom:2023.01.00")
     implementation(composeBom)
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.ui:ui-tooling-preview")
     debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-beta01")
+
+    implementation(project(":repository:implementation"))
+
+    testImplementation(kotlin("test"))
+    //testImplementation("androidx.compose.ui:ui-test:1.3.3")
 }
+
+//tasks.test {
+//    useJUnitPlatform()
+//}

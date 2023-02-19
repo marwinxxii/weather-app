@@ -1,4 +1,4 @@
-package aa.weather.app.screens.weather
+package aa.weather.screens.location
 
 import aa.weather.repository.RepositoryModule
 import aa.weather.screens.location.plugin.forecast.daily.DailyForecastModule
@@ -33,9 +33,7 @@ private object WeatherFragmentModule {
     @Provides
     fun provideVMFactory(
         weatherViewModel: Provider<WeatherViewModel>,
-    ) = ViewModelProvider.Factory.from(
-        ViewModelInitializer(
-            WeatherViewModel::class.java
-        ) { weatherViewModel.get() },
+    ): ViewModelProvider.Factory = ViewModelProvider.Factory.from(
+        ViewModelInitializer(WeatherViewModel::class.java) { weatherViewModel.get() },
     )
 }

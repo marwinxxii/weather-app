@@ -1,4 +1,4 @@
-package aa.weather.app.screens.weather.state
+package aa.weather.screens.location.state
 
 import aa.weather.screens.location.plugin.api.PluginUIState
 import aa.weather.screens.location.plugin.api.PluginUIStateProvider

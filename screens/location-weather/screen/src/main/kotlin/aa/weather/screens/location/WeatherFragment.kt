@@ -1,12 +1,12 @@
-package aa.weather.app.screens.weather
+package aa.weather.screens.location
 
-import aa.weather.app.screens.weather.state.ScreenState
 import aa.weather.screens.location.plugin.api.Plugin
 import aa.weather.screens.location.plugin.api.PluginConfiguration
 import aa.weather.screens.location.plugin.api.PluginRenderer
 import aa.weather.screens.location.plugin.api.PluginUIState
 import aa.weather.screens.location.plugin.forecast.daily.DailyForecastPlugin
 import aa.weather.screens.location.plugin.header.HeaderPlugin
+import aa.weather.screens.location.state.ScreenState
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
