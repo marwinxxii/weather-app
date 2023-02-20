@@ -1,6 +1,8 @@
 package aa.weather.entities.weather.repository
 
+import aa.weather.entities.weather.DailyForecast
 import aa.weather.entities.weather.LatestWeather
+import aa.weather.entities.weather.repository.providers.DailyForecastProvider
 import aa.weather.entities.weather.repository.providers.LatestWeatherProvider
 import aa.weather.entities.weather.repository.rest.ApiKey
 import aa.weather.entities.weather.repository.rest.WeatherAPI
@@ -38,6 +40,19 @@ private object PrivateDataModule {
         persistedStorage: PersistedStorage,
     ): SubscriptionDataProvider =
         LatestWeatherProvider(
+            weatherService,
+            persistedStorage,
+            ""
+        )
+
+    @Provides
+    @IntoMap
+    @ClassKey(DailyForecast::class)
+    fun provideDailyForecastProvider(
+        weatherService: WeatherService,
+        persistedStorage: PersistedStorage,
+    ): SubscriptionDataProvider =
+        DailyForecastProvider(
             weatherService,
             persistedStorage,
             ""

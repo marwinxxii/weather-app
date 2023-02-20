@@ -8,12 +8,13 @@ data class DailyForecast(
 ) : Subscribable
 
 data class LocationDailyForecast(
-    val location: Location,
+    val location: String,
     val days: List<DayForecast>,
 )
 
 data class DayForecast(
-    val weather: Set<WeatherCondition>,
+    val date: String,
+    val weatherConditions: String,
     val temperatureMin: Temperature,
     val temperatureMax: Temperature,
 )

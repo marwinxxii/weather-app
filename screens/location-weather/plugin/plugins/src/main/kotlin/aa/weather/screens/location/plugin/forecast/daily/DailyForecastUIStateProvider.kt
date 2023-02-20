@@ -37,9 +37,9 @@ internal class DailyForecastUIStateProvider(
             ?.days
             ?.map {
                 DayForecastUIModel(
-                    temperatureMin = it.temperatureMin.toString(),
-                    temperatureMax = it.temperatureMax.toString(),
-                    weatherConditions = it.weather.toString(),
+                    temperatureMin = it.temperatureMin.value.toString(),
+                    temperatureMax = it.temperatureMax.value.toString(),
+                    weatherConditions = it.weatherConditions,
                 )
             }
             ?.let(::ItemsState)

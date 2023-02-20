@@ -35,7 +35,7 @@ class LatestWeatherProvider(
             persistedStorage.getPersistedData<LocationCurrentWeatherDto>(location)
                 .let { persisted ->
                     // check if fresh enough
-                    persisted ?: weatherService.getCurrentWeather(location.name).also {
+                    persisted ?: weatherService.getLatestWeather(location.name).also {
                         if (it != null) {
                             persistedStorage.persist(key = location, data = it)
                         }
