@@ -1,10 +1,16 @@
 package aa.weather.repository.api.data
 
-import aa.weather.repository.api.Arguments
+import aa.weather.subscription.api.Subscribable
+import aa.weather.subscription.api.SubscriptionArguments
 
 data class DailyForecast(
+    val locations: List<LocationDailyForecast>,
+) : Subscribable
+
+data class LocationDailyForecast(
+    val location: Location,
     val days: List<DayForecast>,
-) : ManagedData
+)
 
 data class DayForecast(
     val weather: Set<Weather>,
@@ -24,4 +30,4 @@ data class Temperature(
 
 data class DailyForecastArguments(
     val daysCount: Int,
-) : Arguments
+) : SubscriptionArguments

@@ -1,5 +1,7 @@
 package aa.weather.screens.location
 
+import aa.weather.repository.api.data.Location
+import aa.weather.screens.location.state.LocationBoundSubscriptionService
 import aa.weather.screens.location.kernel.PluginManager
 import aa.weather.screens.location.state.ScreenState
 import aa.weather.screens.location.state.ScreenUIModel
@@ -61,6 +63,7 @@ class WeatherFragment : Fragment() {
                 renderItems(s)
             }
         }
+        vm.setLocation(Location(name = "Berlin"))
     }
 
     @Composable
@@ -97,6 +100,7 @@ class WeatherFragment : Fragment() {
 
 internal class WeatherViewModel @Inject constructor(
     private val pluginManager: PluginManager,
+    private val service: LocationBoundSubscriptionService,
 ) : ViewModel() {
     private val scope = CoroutineScope(viewModelScope.coroutineContext + AndroidUiDispatcher.Main)
 
@@ -123,6 +127,10 @@ internal class WeatherViewModel @Inject constructor(
     }
 
     fun getRenderer(model: ScreenUIModel) = pluginManager.getOrCreateRenderer(model.pluginKey)
+
+    fun setLocation(location: Location) {
+        service.setLocation(location)
+    }
 
     override fun onCleared() {
         scope.cancel()

@@ -38,6 +38,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-beta01")
 
     implementation(project(":repository:implementation"))
+    implementation(project(":subscription:implementation"))
 
     testImplementation(kotlin("test"))
     //testImplementation("androidx.compose.ui:ui-test:1.3.3")
