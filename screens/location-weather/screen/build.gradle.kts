@@ -37,8 +37,8 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-beta01")
 
-    implementation(project(":repository:implementation"))
-    implementation(project(":subscription:implementation"))
+    implementation(project(":entities:weather:repository:implementation"))
+    implementation(project(":platform:subscription:service:implementation"))
 
     testImplementation(kotlin("test"))
     //testImplementation("androidx.compose.ui:ui-test:1.3.3")

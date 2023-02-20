@@ -1,11 +1,11 @@
 package aa.weather.screens.location.plugin.forecast.daily
 
-import aa.weather.repository.api.data.DailyForecastArguments
+import aa.weather.entities.weather.DailyForecastArguments
 import aa.weather.screens.location.plugin.api.Plugin
 import aa.weather.screens.location.plugin.api.PluginConfiguration
 import aa.weather.screens.location.plugin.api.PluginRenderer
 import aa.weather.screens.location.plugin.api.PluginUIStateProvider
-import aa.weather.subscription.api.SubscriptionService
+import aa.weather.subscription.service.api.SubscriptionService
 import javax.inject.Inject
 
 class DailyForecastPlugin @Inject internal constructor(

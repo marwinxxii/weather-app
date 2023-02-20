@@ -1,10 +1,10 @@
 package aa.weather.screens.location.state
 
-import aa.weather.repository.api.data.Location
-import aa.weather.repository.api.data.LocationFilter
+import aa.weather.entities.weather.Location
+import aa.weather.entities.weather.LocationFilter
 import aa.weather.subscription.api.Subscribable
 import aa.weather.subscription.api.Subscription
-import aa.weather.subscription.api.SubscriptionService
+import aa.weather.subscription.service.api.SubscriptionService
 import aa.weather.subscription.api.addDataFilter
 import aa.weather.subscription.api.hasDataFilter
 import kotlinx.coroutines.ExperimentalCoroutinesApi

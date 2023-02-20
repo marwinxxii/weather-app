@@ -1,28 +1,29 @@
 package aa.weather.screens.location
 
-import aa.weather.repository.DailyForecastMockProvider
-import aa.weather.repository.LatestWeatherMockProvider
-import aa.weather.repository.api.data.DailyForecast
-import aa.weather.repository.api.data.LatestWeather
+import aa.weather.entities.weather.repository.rest.ApiKey
+import aa.weather.entities.weather.repository.EntitiesModule
 import aa.weather.screens.location.state.LocationBoundSubscriptionService
 import aa.weather.screens.location.kernel.PluginManager
 import aa.weather.screens.location.kernel.ScreenConfiguration
 import aa.weather.screens.location.plugin.forecast.daily.DailyForecastConfiguration
 import aa.weather.screens.location.plugin.forecast.daily.DailyForecastPlugin
 import aa.weather.screens.location.plugin.header.HeaderPlugin
-import aa.weather.subscription.api.SubscriptionService
-import aa.weather.subscription.kernel.KernelSubscriptionService
+import aa.weather.subscription.kernel.SubscriptionServiceModule
+import aa.weather.subscription.service.api.SubscriptionService
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.ViewModelInitializer
 import dagger.Component
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
 import javax.inject.Provider
 import javax.inject.Singleton
 
 @Component(
     modules = [
         WeatherFragmentModule::class,
+        EntitiesModule::class,
+        SubscriptionServiceModule::class,
         PluginsModule::class,
     ],
 )
@@ -47,15 +48,10 @@ private object WeatherFragmentModule {
 
     @Provides
     @Singleton
-    fun provideLocationBoundService(): LocationBoundSubscriptionService =
-        LocationBoundSubscriptionService(
-            delegate = KernelSubscriptionService(
-                mapOf(
-                    LatestWeather::class.java to LatestWeatherMockProvider,
-                    DailyForecast::class.java to DailyForecastMockProvider,
-                )
-            )
-        )
+    fun provideLocationBoundService(
+        @Named("kernel") subscriptionService: SubscriptionService,
+    ): LocationBoundSubscriptionService =
+        LocationBoundSubscriptionService(delegate = subscriptionService)
 
     @Provides
     fun provideSubscriptionService(instance: LocationBoundSubscriptionService): SubscriptionService =

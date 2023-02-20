@@ -1,6 +1,6 @@
 package aa.weather.screens.location
 
-import aa.weather.repository.api.data.Location
+import aa.weather.entities.weather.Location
 import aa.weather.screens.location.state.LocationBoundSubscriptionService
 import aa.weather.screens.location.kernel.PluginManager
 import aa.weather.screens.location.state.ScreenState
@@ -63,7 +63,7 @@ class WeatherFragment : Fragment() {
                 renderItems(s)
             }
         }
-        vm.setLocation(Location(name = "Berlin"))
+        vm.setLocation(Location(name = "auto:ip"))
     }
 
     @Composable

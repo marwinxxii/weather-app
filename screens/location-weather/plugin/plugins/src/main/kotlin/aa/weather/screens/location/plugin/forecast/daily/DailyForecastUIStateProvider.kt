@@ -1,12 +1,12 @@
 package aa.weather.screens.location.plugin.forecast.daily
 
-import aa.weather.repository.api.data.DailyForecast
-import aa.weather.repository.api.data.DailyForecastArguments
+import aa.weather.entities.weather.DailyForecast
+import aa.weather.entities.weather.DailyForecastArguments
 import aa.weather.screens.location.plugin.api.ItemsState
 import aa.weather.screens.location.plugin.api.PluginUIState
 import aa.weather.screens.location.plugin.api.PluginUIStateProvider
 import aa.weather.subscription.api.Subscription
-import aa.weather.subscription.api.SubscriptionService
+import aa.weather.subscription.service.api.SubscriptionService
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,8 +37,8 @@ internal class DailyForecastUIStateProvider(
             ?.days
             ?.map {
                 DayForecastUIModel(
-                    temperatureMin = it.temperatureMin.formatted,
-                    temperatureMax = it.temperatureMax.formatted,
+                    temperatureMin = it.temperatureMin.toString(),
+                    temperatureMax = it.temperatureMax.toString(),
                     weatherConditions = it.weather.toString(),
                 )
             }

@@ -29,8 +29,8 @@ dependencies {
     kapt("com.google.dagger:dagger-compiler:2.45")
 
     api(project(":screens:location-weather:plugin:api"))
-    implementation(project(":repository:api"))
-    implementation(project(":subscription:api"))
+    implementation(project(":entities:weather:api"))
+    implementation(project(":platform:subscription:service:api"))
 
     val composeBom = platform("androidx.compose:compose-bom:2023.01.00")
     implementation(composeBom)

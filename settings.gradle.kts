@@ -14,11 +14,12 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Weather app"
-include(":repository:api")
-include(":repository:implementation")
+include(":app")
+include(":entities:weather:api")
+include(":entities:weather:repository:implementation")
+include(":platform:subscription:data:api")
+include(":platform:subscription:service:api")
+include(":platform:subscription:service:implementation")
 include(":screens:location-weather:plugin:api")
 include(":screens:location-weather:plugin:plugins")
 include(":screens:location-weather:screen")
-include(":subscription:api")
-include(":subscription:implementation")
-include(":app")
