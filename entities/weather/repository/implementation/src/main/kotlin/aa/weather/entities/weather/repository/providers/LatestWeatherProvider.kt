@@ -4,9 +4,11 @@ import aa.weather.entities.weather.LatestWeather
 import aa.weather.entities.weather.Location
 import aa.weather.entities.weather.LocationFilter
 import aa.weather.entities.weather.LocationLatestWeather
-import aa.weather.entities.weather.repository.PersistedStorage
+import aa.weather.persisted.storage.api.PersistedStorage
 import aa.weather.entities.weather.repository.WeatherService
 import aa.weather.entities.weather.repository.dto.LocationCurrentWeatherDto
+import aa.weather.persisted.storage.api.PersistenceConfiguration
+import aa.weather.persisted.storage.api.getOrPersist
 import aa.weather.subscription.api.Subscribable
 import aa.weather.subscription.api.Subscription
 import aa.weather.subscription.api.takeIfTopic
@@ -14,8 +16,9 @@ import aa.weather.subscription.service.api.SubscriptionDataProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import java.util.concurrent.TimeUnit
 
-class LatestWeatherProvider(
+internal class LatestWeatherProvider(
     private val weatherService: WeatherService,
     private val persistedStorage: PersistedStorage,
     private val userPreferencesProvider: Any,
@@ -32,15 +35,16 @@ class LatestWeatherProvider(
 
     private fun requestData(location: Location): Flow<LatestWeather> =
         flow {
-            persistedStorage.getPersistedData<LocationCurrentWeatherDto>(location)
-                .let { persisted ->
-                    // check if fresh enough
-                    persisted ?: weatherService.getLatestWeather(location.name).also {
-                        if (it != null) {
-                            persistedStorage.persist(key = location, data = it)
-                        }
-                    }
-                }
+            persistedStorage.getOrPersist(
+                PersistenceConfiguration(
+                    key = "latest-weather-${location.name}",
+                    ttl = TimeUnit.HOURS.toMillis(1L),
+                ),
+                LocationCurrentWeatherDto.serializer(),
+                LocationCurrentWeatherDto.serializer(),
+            ) {
+                weatherService.getLatestWeather(location.name)
+            }
                 ?.let {
                     LocationLatestWeather(
                         location = it.location.name,

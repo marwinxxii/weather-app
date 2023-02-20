@@ -39,6 +39,7 @@ dependencies {
 
     implementation(project(":entities:weather:repository:implementation"))
     implementation(project(":platform:subscription:service:implementation"))
+    implementation(project(":platform:persisted-storage:implementation"))
 
     testImplementation(kotlin("test"))
     //testImplementation("androidx.compose.ui:ui-test:1.3.3")

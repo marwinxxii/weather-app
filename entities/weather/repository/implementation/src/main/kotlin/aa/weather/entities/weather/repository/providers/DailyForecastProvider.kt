@@ -7,9 +7,11 @@ import aa.weather.entities.weather.Location
 import aa.weather.entities.weather.LocationDailyForecast
 import aa.weather.entities.weather.LocationFilter
 import aa.weather.entities.weather.Temperature
-import aa.weather.entities.weather.repository.PersistedStorage
+import aa.weather.persisted.storage.api.PersistedStorage
 import aa.weather.entities.weather.repository.WeatherService
 import aa.weather.entities.weather.repository.dto.DailyForecastDto
+import aa.weather.persisted.storage.api.PersistenceConfiguration
+import aa.weather.persisted.storage.api.getOrPersist
 import aa.weather.subscription.api.Subscribable
 import aa.weather.subscription.api.Subscription
 import aa.weather.subscription.api.takeIfTopic
@@ -17,8 +19,9 @@ import aa.weather.subscription.service.api.SubscriptionDataProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import java.util.concurrent.TimeUnit
 
-class DailyForecastProvider(
+internal class DailyForecastProvider(
     private val weatherService: WeatherService,
     private val persistedStorage: PersistedStorage,
     private val userPreferencesProvider: Any,
@@ -31,22 +34,28 @@ class DailyForecastProvider(
                 ?.dataFilters
                 ?.filterIsInstance<LocationFilter>()
                 ?.forEach {
-                    emitAll(requestData(it.location, subscription.arguments as DailyForecastArguments) as Flow<T>)
+                    emitAll(
+                        requestData(
+                            it.location,
+                            subscription.arguments as DailyForecastArguments
+                        ) as Flow<T>
+                    )
                 }
             // else report error
         }
 
     private fun requestData(location: Location, args: DailyForecastArguments): Flow<DailyForecast> =
         flow {
-            persistedStorage.getPersistedData<DailyForecastDto>(location)
-                .let { persisted ->
-                    // check if fresh enough
-                    persisted ?: weatherService.getForecast(location.name, args.daysCount).also {
-                        if (it != null) {
-                            persistedStorage.persist(key = location, data = it)
-                        }
-                    }
-                }
+            persistedStorage.getOrPersist(
+                PersistenceConfiguration(
+                    key = "daily-forecast-${location.name}",
+                    ttl = TimeUnit.HOURS.toMillis(4L),
+                ),
+                DailyForecastDto.serializer(),
+                DailyForecastDto.serializer(),
+            ) {
+                weatherService.getForecast(location.name, args.daysCount)
+            }
                 ?.let { forecast ->
                     LocationDailyForecast(
                         location = forecast.location.name,

@@ -56,7 +56,11 @@ class WeatherFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        DaggerWeatherFragmentComponent.create().inject(this)
+        if (!::vmFactory.isInitialized) {
+            DaggerWeatherFragmentComponent.factory()
+                .create(PersistenceModule(requireContext().applicationContext))
+                .inject(this)
+        }
         (view as ComposeView).setContent {
             MaterialTheme {
                 val s by vm.state.collectAsStateWithLifecycle()

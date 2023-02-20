@@ -2,6 +2,8 @@ package aa.weather.screens.location
 
 import aa.weather.entities.weather.repository.rest.ApiKey
 import aa.weather.entities.weather.repository.EntitiesModule
+import aa.weather.persisted.storage.JsonFilePersistedStorage
+import aa.weather.persisted.storage.api.PersistedStorage
 import aa.weather.screens.location.state.LocationBoundSubscriptionService
 import aa.weather.screens.location.kernel.PluginManager
 import aa.weather.screens.location.kernel.ScreenConfiguration
@@ -10,11 +12,13 @@ import aa.weather.screens.location.plugin.forecast.daily.DailyForecastPlugin
 import aa.weather.screens.location.plugin.header.HeaderPlugin
 import aa.weather.subscription.kernel.SubscriptionServiceModule
 import aa.weather.subscription.service.api.SubscriptionService
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.ViewModelInitializer
 import dagger.Component
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Named
 import javax.inject.Provider
 import javax.inject.Singleton
@@ -24,16 +28,17 @@ import javax.inject.Singleton
         WeatherFragmentModule::class,
         EntitiesModule::class,
         SubscriptionServiceModule::class,
+        PersistenceModule::class,
         PluginsModule::class,
     ],
 )
 @Singleton
-interface WeatherFragmentComponent {
+internal interface WeatherFragmentComponent {
     fun inject(fragment: WeatherFragment)
 
     @Component.Factory
     interface Factory {
-        fun create(): WeatherFragmentComponent
+        fun create(persistenceModule: PersistenceModule): WeatherFragmentComponent
     }
 }
 
@@ -77,4 +82,12 @@ private object PluginsModule {
                 configuration = DailyForecastConfiguration(daysCount = 50),
             )
             .assemblePlugins()
+}
+
+@Module
+internal class PersistenceModule(private val context: Context) {
+    @Provides
+    @Singleton
+    fun providePersistedStorage(): PersistedStorage =
+        JsonFilePersistedStorage(context, Dispatchers.IO)
 }

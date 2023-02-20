@@ -6,6 +6,7 @@ import aa.weather.entities.weather.repository.providers.DailyForecastProvider
 import aa.weather.entities.weather.repository.providers.LatestWeatherProvider
 import aa.weather.entities.weather.repository.rest.ApiKey
 import aa.weather.entities.weather.repository.rest.WeatherAPI
+import aa.weather.persisted.storage.api.PersistedStorage
 import aa.weather.subscription.service.api.SubscriptionDataProvider
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
@@ -21,17 +22,6 @@ import javax.inject.Singleton
 
 @Module
 private object PrivateDataModule {
-    @Provides
-    fun provideStorage(): PersistedStorage =
-        object : PersistedStorage {
-            override suspend fun <T> getPersistedData(key: Any): T? {
-                return null
-            }
-
-            override fun persist(key: Any, data: Any) {
-            }
-        }
-
     @Provides
     @IntoMap
     @ClassKey(LatestWeather::class)
