@@ -1,24 +1,20 @@
 package aa.weather.screens.location
 
-import aa.weather.entities.weather.repository.rest.ApiKey
-import aa.weather.entities.weather.repository.EntitiesModule
-import aa.weather.persisted.storage.JsonFilePersistedStorage
-import aa.weather.persisted.storage.api.PersistedStorage
+import aa.weather.entities.location.LocationsService
 import aa.weather.screens.location.state.LocationBoundSubscriptionService
 import aa.weather.screens.location.kernel.PluginManager
 import aa.weather.screens.location.kernel.ScreenConfiguration
 import aa.weather.screens.location.plugin.forecast.daily.DailyForecastConfiguration
 import aa.weather.screens.location.plugin.forecast.daily.DailyForecastPlugin
 import aa.weather.screens.location.plugin.header.HeaderPlugin
-import aa.weather.subscription.kernel.SubscriptionServiceModule
+import aa.weather.screens.location.state.WeatherViewModel
 import aa.weather.subscription.service.api.SubscriptionService
-import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.ViewModelInitializer
+import dagger.BindsInstance
 import dagger.Component
 import dagger.Module
 import dagger.Provides
-import kotlinx.coroutines.Dispatchers
 import javax.inject.Named
 import javax.inject.Provider
 import javax.inject.Singleton
@@ -26,9 +22,6 @@ import javax.inject.Singleton
 @Component(
     modules = [
         WeatherFragmentModule::class,
-        EntitiesModule::class,
-        SubscriptionServiceModule::class,
-        PersistenceModule::class,
         PluginsModule::class,
     ],
 )
@@ -38,7 +31,10 @@ internal interface WeatherFragmentComponent {
 
     @Component.Factory
     interface Factory {
-        fun create(persistenceModule: PersistenceModule): WeatherFragmentComponent
+        fun create(
+            @BindsInstance @Named("app") subscriptionService: SubscriptionService,
+            @BindsInstance locationsService: LocationsService,
+        ): WeatherFragmentComponent
     }
 }
 
@@ -54,7 +50,7 @@ private object WeatherFragmentModule {
     @Provides
     @Singleton
     fun provideLocationBoundService(
-        @Named("kernel") subscriptionService: SubscriptionService,
+        @Named("app") subscriptionService: SubscriptionService,
     ): LocationBoundSubscriptionService =
         LocationBoundSubscriptionService(delegate = subscriptionService)
 
@@ -82,12 +78,4 @@ private object PluginsModule {
                 configuration = DailyForecastConfiguration(daysCount = 50),
             )
             .assemblePlugins()
-}
-
-@Module
-internal class PersistenceModule(private val context: Context) {
-    @Provides
-    @Singleton
-    fun providePersistedStorage(): PersistedStorage =
-        JsonFilePersistedStorage(context, Dispatchers.IO)
 }

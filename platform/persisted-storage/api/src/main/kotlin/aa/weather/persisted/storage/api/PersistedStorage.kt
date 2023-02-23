@@ -1,9 +1,10 @@
 package aa.weather.persisted.storage.api
 
+import aa.weather.component.di.AppPlugin
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerializationStrategy
 
-interface PersistedStorage {
+interface PersistedStorage : AppPlugin {
     suspend fun <T : Any> getPersistedData(
         key: String,
         deserializationStrategy: DeserializationStrategy<T>,

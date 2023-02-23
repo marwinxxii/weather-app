@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id("kotlin-kapt")
 }
 
 android {
@@ -15,6 +16,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "WEATHER_API_KEY", "\"" + (findProperty("WEATHER_API_KEY") ?: "") + "\"")
     }
 
     buildTypes {
@@ -33,7 +35,18 @@ android {
 }
 
 dependencies {
+    implementation(project(":platform:screen:api"))
+    implementation(project(":platform:component:plugin:api"))
+    implementation(project(":platform:persisted-storage:implementation"))
+    implementation(project(":platform:subscription:service:kernel:implementation"))
+    implementation(project(":entities:location:implementation"))
+    implementation(project(":entities:weather:repository:implementation"))
     implementation(project(":screens:location-weather:screen"))
+    implementation(project(":screens:locations:screen:implementation"))
+
+    implementation("com.google.dagger:dagger:2.45")
+    kapt("com.google.dagger:dagger-compiler:2.45")
+
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'

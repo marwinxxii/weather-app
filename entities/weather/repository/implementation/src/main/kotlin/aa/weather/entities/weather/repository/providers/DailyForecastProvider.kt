@@ -1,21 +1,21 @@
 package aa.weather.entities.weather.repository.providers
 
+import aa.weather.entities.location.LocationFilter
+import aa.weather.entities.location.LocationID
 import aa.weather.entities.weather.DailyForecast
 import aa.weather.entities.weather.DailyForecastArguments
 import aa.weather.entities.weather.DayForecast
-import aa.weather.entities.weather.Location
 import aa.weather.entities.weather.LocationDailyForecast
-import aa.weather.entities.weather.LocationFilter
 import aa.weather.entities.weather.Temperature
-import aa.weather.persisted.storage.api.PersistedStorage
 import aa.weather.entities.weather.repository.WeatherService
 import aa.weather.entities.weather.repository.dto.DailyForecastDto
+import aa.weather.persisted.storage.api.PersistedStorage
 import aa.weather.persisted.storage.api.PersistenceConfiguration
 import aa.weather.persisted.storage.api.getOrPersist
 import aa.weather.subscription.api.Subscribable
 import aa.weather.subscription.api.Subscription
 import aa.weather.subscription.api.takeIfTopic
-import aa.weather.subscription.service.api.SubscriptionDataProvider
+import aa.weather.subscription.service.plugin.api.SubscribableDataProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
@@ -25,7 +25,7 @@ internal class DailyForecastProvider(
     private val weatherService: WeatherService,
     private val persistedStorage: PersistedStorage,
     private val userPreferencesProvider: Any,
-) : SubscriptionDataProvider {
+) : SubscribableDataProvider {
     override fun <T : Subscribable> observeData(subscription: Subscription<T>): Flow<T> =
         flow {
             subscription
@@ -44,17 +44,20 @@ internal class DailyForecastProvider(
             // else report error
         }
 
-    private fun requestData(location: Location, args: DailyForecastArguments): Flow<DailyForecast> =
+    private fun requestData(
+        location: LocationID,
+        args: DailyForecastArguments,
+    ): Flow<DailyForecast> =
         flow {
             persistedStorage.getOrPersist(
                 PersistenceConfiguration(
-                    key = "daily-forecast-${location.name}",
+                    key = "daily-forecast-${location.value}",
                     ttl = TimeUnit.HOURS.toMillis(4L),
                 ),
                 DailyForecastDto.serializer(),
                 DailyForecastDto.serializer(),
             ) {
-                weatherService.getForecast(location.name, args.daysCount)
+                weatherService.getForecast(location.value, args.daysCount)
             }
                 ?.let { forecast ->
                     LocationDailyForecast(
