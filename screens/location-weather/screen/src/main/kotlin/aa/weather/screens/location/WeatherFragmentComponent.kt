@@ -1,6 +1,7 @@
 package aa.weather.screens.location
 
 import aa.weather.entities.location.LocationsService
+import aa.weather.screen.api.FragmentScope
 import aa.weather.screens.location.state.LocationBoundSubscriptionService
 import aa.weather.screens.location.kernel.PluginManager
 import aa.weather.screens.location.kernel.ScreenConfiguration
@@ -17,7 +18,6 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Named
 import javax.inject.Provider
-import javax.inject.Singleton
 
 @Component(
     modules = [
@@ -25,7 +25,7 @@ import javax.inject.Singleton
         PluginsModule::class,
     ],
 )
-@Singleton
+@FragmentScope
 internal interface WeatherFragmentComponent {
     fun inject(fragment: WeatherFragment)
 
@@ -48,7 +48,7 @@ private object WeatherFragmentModule {
     )
 
     @Provides
-    @Singleton
+    @FragmentScope
     fun provideLocationBoundService(
         @Named("app") subscriptionService: SubscriptionService,
     ): LocationBoundSubscriptionService =
