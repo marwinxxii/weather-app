@@ -3,6 +3,8 @@ package aa.weather.app
 import aa.weather.entities.location.LocationEntityModule
 import aa.weather.entities.weather.repository.WeatherEntityModule
 import aa.weather.entities.weather.repository.rest.ApiKey
+import aa.weather.navigation.navigator.api.Destination
+import aa.weather.navigation.plugin.api.NavigationPlugin
 import aa.weather.persisted.storage.PersistedStorageModule
 import aa.weather.subscription.service.kernel.SubscriptionServiceModule
 import android.content.Context
@@ -19,10 +21,12 @@ import javax.inject.Singleton
         WeatherEntityModule::class,
         PersistedStorageModule::class,
         SubscriptionServiceModule::class,
+        RootModule::class,
     ]
 )
 internal interface AppComponent {
     fun inject(app: WeatherApp)
+    fun inject(activity: RootActivity)
 
     @Component.Factory
     interface Factory {
@@ -30,6 +34,7 @@ internal interface AppComponent {
             @BindsInstance context: Context,
             @BindsInstance @Named("IO") ioDispatcher: CoroutineDispatcher,
             @BindsInstance apiKey: ApiKey,
+            @BindsInstance screens: @JvmSuppressWildcards Map<Class<out Destination>, NavigationPlugin>,
         ): AppComponent
     }
 }

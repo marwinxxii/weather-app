@@ -42,7 +42,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import javax.inject.Inject
 
-class LocationsFragment : Fragment(), InjectableScreen {
+internal class LocationsFragment : Fragment(), InjectableScreen {
     @Inject
     internal lateinit var vmFactory: ViewModelProvider.Factory
 

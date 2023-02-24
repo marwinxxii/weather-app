@@ -1,9 +1,8 @@
 package aa.weather.screens.location
 
-import aa.weather.screen.api.ScreenDependenciesLocator
-import aa.weather.screen.api.InjectableScreen
-import aa.weather.entities.location.LocationID
 import aa.weather.entities.location.LocationsService
+import aa.weather.screen.api.InjectableScreen
+import aa.weather.screen.api.ScreenDependenciesLocator
 import aa.weather.screens.location.state.ScreenState
 import aa.weather.screens.location.state.WeatherViewModel
 import aa.weather.subscription.service.api.SubscriptionService
@@ -26,7 +25,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import javax.inject.Inject
 
-class WeatherFragment : Fragment(), InjectableScreen {
+internal class WeatherFragment : Fragment(), InjectableScreen {
     @Inject
     internal lateinit var vmFactory: ViewModelProvider.Factory
 
@@ -65,7 +64,6 @@ class WeatherFragment : Fragment(), InjectableScreen {
                 renderItems(s)
             }
         }
-        vm.setLocation(LocationID("auto:ip"))
     }
 
     @Composable
