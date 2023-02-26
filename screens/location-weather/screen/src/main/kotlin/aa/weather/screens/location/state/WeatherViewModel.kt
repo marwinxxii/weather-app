@@ -1,7 +1,7 @@
 package aa.weather.screens.location.state
 
-import aa.weather.entities.location.LocationID
-import aa.weather.entities.location.LocationsService
+import aa.weather.navigation.navigator.api.Navigator
+import aa.weather.screens.location.PreferencesDestination
 import aa.weather.screens.location.kernel.PluginManager
 import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.lifecycle.ViewModel
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 internal class WeatherViewModel @Inject constructor(
     private val pluginManager: PluginManager,
-    private val locationsService: LocationsService,
+    private val navigator: Navigator,
 ) : ViewModel() {
     private val scope = CoroutineScope(viewModelScope.coroutineContext + AndroidUiDispatcher.Main)
 
@@ -37,14 +37,20 @@ internal class WeatherViewModel @Inject constructor(
                     }
                     result
                 }
-                .let { ScreenState("", it) }
+                .let {
+                    if (it.isEmpty()) {
+                        ScreenState.Loading
+                    } else {
+                        ScreenState.Loaded(it)
+                    }
+                }
         }
     }
 
     fun getRenderer(model: ScreenUIModel) = pluginManager.getOrCreateRenderer(model.pluginKey)
 
-    fun setLocation(location: LocationID) {
-        locationsService.setCurrentlySelectedLocation(location)
+    fun onShowPreferences() {
+        navigator.navigateTo(PreferencesDestination)
     }
 
     override fun onCleared() {

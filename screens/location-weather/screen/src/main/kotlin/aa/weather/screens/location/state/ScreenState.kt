@@ -3,12 +3,15 @@ package aa.weather.screens.location.state
 import aa.weather.screens.location.kernel.PluginKey
 import aa.weather.screens.location.plugin.api.UIModel
 
-data class ScreenState(
-    val locationId: String,
-    val items: List<ScreenUIModel>,
-)
+internal sealed interface ScreenState {
+    object Loading : ScreenState
 
-data class ScreenUIModel(
+    data class Loaded(
+        val items: List<ScreenUIModel>,
+    ) : ScreenState
+}
+
+internal data class ScreenUIModel(
     val pluginKey: PluginKey,
     val itemKey: Any,
     val contentType: Any,

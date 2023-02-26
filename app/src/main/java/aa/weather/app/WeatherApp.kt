@@ -5,6 +5,7 @@ import aa.weather.screen.api.ScreenDependenciesLocator
 import aa.weather.entities.weather.repository.rest.ApiKey
 import aa.weather.screens.location.WeatherScreen
 import aa.weather.screens.locations.LocationsScreen
+import aa.weather.screens.location.PreferencesDestination
 import android.app.Application
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
@@ -13,18 +14,16 @@ class WeatherApp : Application(), ScreenDependenciesLocator {
     @Inject
     internal lateinit var appPlugins: @JvmSuppressWildcards dagger.Lazy<Map<Class<out AppPlugin>, AppPlugin>>
 
-    internal lateinit var component: AppComponent
-        private set
-
     override fun onCreate() {
         super.onCreate()
-        component = DaggerAppComponent.factory().create(
+        val component = DaggerAppComponent.factory().create(
             context = this,
             ioDispatcher = Dispatchers.IO,
             apiKey = ApiKey(value = BuildConfig.WEATHER_API_KEY),
             screens = mapOf(
                 LocationsScreen.Destination::class.java to LocationsScreen.NavigationPlugin,
                 WeatherScreen.Destination::class.java to WeatherScreen.NavigationPlugin,
+                PreferencesDestination::class.java to LocationsScreen.NavigationPlugin,
             ),
         )
         component.inject(this)
@@ -32,10 +31,9 @@ class WeatherApp : Application(), ScreenDependenciesLocator {
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : Any> getOrCreateDependency(dependencyClass: Class<T>): T {
-        require(AppPlugin::class.java.isAssignableFrom(dependencyClass))
-        return requireNotNull(appPlugins.get()[dependencyClass as Class<out AppPlugin>]) {
-            "Requested plugin was not registered: $dependencyClass"
-        } as T
-    }
+    override fun <T : AppPlugin> getOrCreateDependency(dependencyClass: Class<T>): T =
+        appPlugins.get()[dependencyClass]
+            .let {
+                requireNotNull(it) { "Requested plugin was not registered: $dependencyClass" } as T
+            }
 }

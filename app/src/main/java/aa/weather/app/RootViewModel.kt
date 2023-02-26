@@ -13,8 +13,9 @@ import javax.inject.Inject
 
 internal class RootViewModel @Inject constructor(
     private val subscriptionService: SubscriptionService,
+    private val navigator: Navigator,
 ) : ViewModel() {
-    fun attach(navigator: Navigator) {
+    fun attach() {
         viewModelScope.launch {
             subscriptionService.observe(Subscription(UserLocations::class.java))
                 .collect {

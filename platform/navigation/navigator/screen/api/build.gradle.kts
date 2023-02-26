@@ -1,0 +1,23 @@
+plugins {
+    id("com.android.library")
+    id("kotlin-android")
+}
+
+android {
+    namespace = "aa.weather.navigator.screen.api"
+    defaultConfig {
+        compileSdk = 33
+        minSdk = 24
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    api(project(":platform:navigation:navigator:api"))
+    api(project(":platform:component:plugin:api"))
+
+    api("androidx.fragment:fragment-ktx:1.5.5")
+}

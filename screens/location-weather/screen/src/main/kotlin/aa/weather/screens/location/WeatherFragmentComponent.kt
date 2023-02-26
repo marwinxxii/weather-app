@@ -1,6 +1,7 @@
 package aa.weather.screens.location
 
 import aa.weather.entities.location.LocationsService
+import aa.weather.navigation.navigator.api.Navigator
 import aa.weather.screen.api.FragmentScope
 import aa.weather.screens.location.state.LocationBoundSubscriptionService
 import aa.weather.screens.location.kernel.PluginManager
@@ -34,6 +35,7 @@ internal interface WeatherFragmentComponent {
         fun create(
             @BindsInstance @Named("app") subscriptionService: SubscriptionService,
             @BindsInstance locationsService: LocationsService,
+            @BindsInstance navigator: Navigator,
         ): WeatherFragmentComponent
     }
 }

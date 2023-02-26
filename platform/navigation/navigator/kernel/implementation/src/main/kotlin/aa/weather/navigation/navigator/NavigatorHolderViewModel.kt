@@ -1,8 +1,7 @@
 package aa.weather.navigation.navigator
 
 import androidx.lifecycle.ViewModel
-import javax.inject.Inject
 
-class NavigatorHolderViewModel @Inject internal constructor(
+internal class NavigatorHolderViewModel(
     val navigator: FragmentNavigator,
 ) : ViewModel()

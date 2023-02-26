@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 typealias NavigationPlugins = @JvmSuppressWildcards Map<Class<out Destination>, NavigationPlugin>
 
-class FragmentNavigator @Inject constructor(
+class FragmentNavigator @Inject internal constructor(
     private val plugins: NavigationPlugins,
 ) : Navigator {
     private val navigationCommands = MutableStateFlow<Destination?>(value = null)

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="screen_weather_preferences_action_content_desc" a11y="true">Preferences</string>
+</resources>

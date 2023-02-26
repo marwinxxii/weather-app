@@ -31,6 +31,7 @@ dependencies {
     implementation(project(":entities:weather:api"))
     implementation(project(":platform:screen:api"))
     implementation(project(":platform:subscription:service:api"))
+    implementation(project(":platform:navigation:navigator:screen:api"))
 
     implementation("com.google.dagger:dagger:2.45")
     kapt("com.google.dagger:dagger-compiler:2.45")

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "aa.weather.app.navigator"
+    namespace = "aa.weather.navigator"
 
     defaultConfig {
         compileSdk = 33
@@ -19,7 +19,9 @@ android {
 
 dependencies {
     api(project(":platform:navigation:navigator:api"))
+    api(project(":platform:navigation:navigator:screen:api"))
     api(project(":platform:navigation:plugin:api"))
+    api(project(":platform:component:plugin:api"))
 
     kapt("com.google.dagger:dagger-compiler:2.45")
     implementation("com.google.dagger:dagger:2.45")
