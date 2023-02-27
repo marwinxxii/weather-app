@@ -31,7 +31,7 @@ internal class HeaderUIStateProvider @Inject constructor(
             ?.let {
                 HeaderUIModel(
                     locationName = it.location,
-                    temperature = it.temperature,
+                    temperature = it.temperature.formatted,
                     weatherConditions = it.conditions,
                 )
             }

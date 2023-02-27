@@ -5,7 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DayForecastDto(
-    val date: String,
+    @SerialName("date_epoch")
+    val timestamp: Int,
     @SerialName("day")
     val weather: DayForecastedWeatherDto
 )

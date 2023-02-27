@@ -18,7 +18,7 @@ class DailyForecastPlugin @Inject internal constructor(
         )
 
     override fun createRenderer(config: DailyForecastConfiguration): PluginRenderer<*> =
-        DailyForecastRenderer()
+        DailyForecastRenderer
 }
 
 data class DailyForecastConfiguration(

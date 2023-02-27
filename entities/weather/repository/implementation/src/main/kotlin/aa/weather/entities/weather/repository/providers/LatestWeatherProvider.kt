@@ -4,6 +4,7 @@ import aa.weather.entities.location.LocationFilter
 import aa.weather.entities.location.LocationID
 import aa.weather.entities.weather.LatestWeather
 import aa.weather.entities.weather.LocationLatestWeather
+import aa.weather.entities.weather.Temperature
 import aa.weather.entities.weather.repository.WeatherService
 import aa.weather.entities.weather.repository.dto.LocationCurrentWeatherDto
 import aa.weather.persisted.storage.api.PersistedStorage
@@ -49,7 +50,8 @@ internal class LatestWeatherProvider(
                     LocationLatestWeather(
                         location = it.location.name,
                         conditions = it.current.condition.text,
-                        temperature = it.current.temperatureCelcius.toString() + " C",
+                        temperature = it.current.temperatureCelcius
+                            .toTemperatureModel(Temperature.Scale.CELCIUS),
                     )
                 }
                 ?.let(::listOf)

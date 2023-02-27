@@ -11,6 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import kotlinx.coroutines.flow.Flow
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 internal class DailyForecastUIStateProvider(
     private val subscriptionService: SubscriptionService,
@@ -35,12 +38,19 @@ internal class DailyForecastUIStateProvider(
             ?.locations
             ?.firstOrNull()
             ?.days
-            ?.map {
-                DayForecastUIModel(
-                    temperatureMin = it.temperatureMin.value.toString(),
-                    temperatureMax = it.temperatureMax.value.toString(),
-                    weatherConditions = it.weatherConditions,
-                )
+            ?.let { items ->
+                items.mapIndexed { index, it ->
+                    DayForecastUIModel(
+                        dayOfWeek = Instant.ofEpochSecond(it.timestamp.toLong()).let {
+                            DateTimeFormatter.ofPattern("eee")
+                                .format(it.atZone(ZoneId.systemDefault()))
+                        },
+                        temperatureMin = it.temperatureMin.formatted,
+                        temperatureMax = it.temperatureMax.formatted,
+                        weatherConditions = it.weatherConditions,
+                        showDivider = index < items.size - 1,
+                    )
+                }
             }
             ?.let(::ItemsState)
     }

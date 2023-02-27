@@ -64,16 +64,14 @@ internal class DailyForecastProvider(
                         location = forecast.location.name,
                         days = forecast.forecast.days.map {
                             DayForecast(
-                                date = it.date,
+                                timestamp = it.timestamp,
                                 weatherConditions = it.weather.condition.text,
-                                temperatureMin = Temperature(
-                                    value = it.weather.minTemperatureCelcius.toInt(),
-                                    scale = Temperature.Scale.CELCIUS
-                                ),
-                                temperatureMax = Temperature(
-                                    value = it.weather.maxTemperatureCelcius.toInt(),
-                                    scale = Temperature.Scale.CELCIUS
-                                ),
+                                temperatureMin = it.weather
+                                    .minTemperatureCelcius
+                                    .toTemperatureModel(Temperature.Scale.CELCIUS),
+                                temperatureMax = it.weather
+                                    .maxTemperatureCelcius
+                                    .toTemperatureModel(Temperature.Scale.CELCIUS),
                             )
                         },
                     )
@@ -82,4 +80,14 @@ internal class DailyForecastProvider(
                 ?.let(::DailyForecast)
                 ?.also { emit(it) }
         }
+
 }
+
+internal fun Double.toTemperatureModel(scale: Temperature.Scale): Temperature =
+    toInt().let {
+        Temperature(
+            value = it,
+            scale = scale,
+            formatted = "$it°"
+        )
+    }

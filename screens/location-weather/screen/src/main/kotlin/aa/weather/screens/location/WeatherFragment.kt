@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -130,7 +131,9 @@ private fun Content(
 private fun Loading(paddingValues: PaddingValues) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.padding(paddingValues),
+        modifier = Modifier
+            .padding(paddingValues)
+            .fillMaxSize(),
     ) { CircularProgressIndicator() }
 }
 
@@ -140,7 +143,11 @@ private fun Loaded(
     rendererProvider: (ScreenUIModel) -> PluginRenderer<UIModel>,
     paddingValues: PaddingValues,
 ) {
-    LazyColumn(modifier = Modifier.padding(paddingValues)) {
+    LazyColumn(
+        modifier = Modifier
+            .padding(paddingValues)
+            .fillMaxSize(),
+    ) {
         items(
             items,
             key = { it.itemKey },

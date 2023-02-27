@@ -9,5 +9,5 @@ data class LatestWeather(
 data class LocationLatestWeather(
     val location: String,
     val conditions: String,
-    val temperature: String,
+    val temperature: Temperature,
 )

@@ -77,7 +77,7 @@ private object PluginsModule {
             .registerPlugin(
                 key = "next days forecast",
                 plugin = dailyForecastPlugin,
-                configuration = DailyForecastConfiguration(daysCount = 50),
+                configuration = DailyForecastConfiguration(daysCount = 14),
             )
             .assemblePlugins()
 }

@@ -13,7 +13,7 @@ data class LocationDailyForecast(
 )
 
 data class DayForecast(
-    val date: String,
+    val timestamp: Int,
     val weatherConditions: String,
     val temperatureMin: Temperature,
     val temperatureMax: Temperature,
@@ -26,6 +26,7 @@ enum class WeatherCondition {
 data class Temperature(
     val value: Int,
     val scale: Scale,
+    val formatted: String,
 ) {
     enum class Scale {
         CELCIUS, FARENHEIT

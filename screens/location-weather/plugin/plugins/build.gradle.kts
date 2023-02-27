@@ -19,6 +19,12 @@ android {
         kotlinCompilerExtensionVersion = "1.4.1"
     }
 
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -27,6 +33,8 @@ android {
 dependencies {
     implementation("com.google.dagger:dagger:2.45")
     kapt("com.google.dagger:dagger-compiler:2.45")
+
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.2")
 
     api(project(":screens:location-weather:plugin:api"))
     implementation(project(":entities:weather:api"))
