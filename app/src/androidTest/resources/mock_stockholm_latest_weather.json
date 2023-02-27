@@ -1,0 +1,41 @@
+{
+  "location": {
+    "name": "Stockholm",
+    "region": "Stockholms Lan",
+    "country": "Sweden",
+    "lat": 59.33,
+    "lon": 18.05,
+    "tz_id": "Europe/Stockholm",
+    "localtime_epoch": 1677543370,
+    "localtime": "2023-02-28 1:16"
+  },
+  "current": {
+    "last_updated_epoch": 1677543300,
+    "last_updated": "2023-02-28 01:15",
+    "temp_c": 2.0,
+    "temp_f": 35.6,
+    "is_day": 0,
+    "condition": {
+      "text": "Clear",
+      "icon": "//cdn.weatherapi.com/weather/64x64/night/113.png",
+      "code": 1000
+    },
+    "wind_mph": 5.6,
+    "wind_kph": 9.0,
+    "wind_degree": 290,
+    "wind_dir": "WNW",
+    "pressure_mb": 1025.0,
+    "pressure_in": 30.27,
+    "precip_mm": 0.0,
+    "precip_in": 0.0,
+    "humidity": 75,
+    "cloud": 0,
+    "feelslike_c": -1.1,
+    "feelslike_f": 30.0,
+    "vis_km": 10.0,
+    "vis_miles": 6.0,
+    "uv": 1.0,
+    "gust_mph": 14.1,
+    "gust_kph": 22.7
+  }
+}

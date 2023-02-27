@@ -31,18 +31,19 @@ internal class LocationsViewModel @Inject constructor(
         }
     }
 
+    // weatherapi.com resolves lat & lon coordinates incorrectly =\
     private fun defaultLocations(): List<Location> =
         listOf(
             Location(
-                id = LocationID("52.52,13.4050"),
+                id = LocationID("Berlin"),
                 name = "Berlin"
             ),
             Location(
-                id = LocationID("59.3293,18.0686"),
+                id = LocationID("Stockholm"),
                 name = "Stockholm"
             ),
             Location(
-                id = LocationID("40.7128,74.0060"),
+                id = LocationID("New%2FYork"),
                 name = "New York"
             ),
         )

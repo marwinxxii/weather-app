@@ -1,0 +1,41 @@
+{
+  "location": {
+    "name": "Berlin",
+    "region": "Berlin",
+    "country": "Germany",
+    "lat": 52.52,
+    "lon": 13.4,
+    "tz_id": "Europe/Berlin",
+    "localtime_epoch": 1677543387,
+    "localtime": "2023-02-28 1:16"
+  },
+  "current": {
+    "last_updated_epoch": 1677543300,
+    "last_updated": "2023-02-28 01:15",
+    "temp_c": 0.0,
+    "temp_f": 32.0,
+    "is_day": 0,
+    "condition": {
+      "text": "Clear",
+      "icon": "//cdn.weatherapi.com/weather/64x64/night/113.png",
+      "code": 1000
+    },
+    "wind_mph": 3.8,
+    "wind_kph": 6.1,
+    "wind_degree": 70,
+    "wind_dir": "ENE",
+    "pressure_mb": 1031.0,
+    "pressure_in": 30.45,
+    "precip_mm": 0.0,
+    "precip_in": 0.0,
+    "humidity": 80,
+    "cloud": 0,
+    "feelslike_c": -2.7,
+    "feelslike_f": 27.1,
+    "vis_km": 10.0,
+    "vis_miles": 6.0,
+    "uv": 1.0,
+    "gust_mph": 8.7,
+    "gust_kph": 14.0
+  }
+}

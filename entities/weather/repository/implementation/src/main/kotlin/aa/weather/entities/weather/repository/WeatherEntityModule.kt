@@ -4,20 +4,14 @@ import aa.weather.entities.weather.DailyForecast
 import aa.weather.entities.weather.LatestWeather
 import aa.weather.entities.weather.repository.providers.DailyForecastProvider
 import aa.weather.entities.weather.repository.providers.LatestWeatherProvider
-import aa.weather.entities.weather.repository.rest.ApiKey
 import aa.weather.entities.weather.repository.rest.WeatherAPI
+import aa.weather.network.rest.api.APIFactory
 import aa.weather.persisted.storage.api.PersistedStorage
 import aa.weather.subscription.service.plugin.api.SubscribableDataProvider
 import aa.weather.subscription.service.plugin.api.SubscribableDataProviderKey
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
@@ -46,36 +40,10 @@ private object PrivateDataModule {
             persistedStorage,
         )
 
-    @OptIn(ExperimentalSerializationApi::class)
     @Provides
     @Singleton
-    fun providerWeatherApi(key: ApiKey): WeatherAPI {
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor { chain ->
-                chain.request()
-                    .newBuilder()
-                    .url(
-                        chain
-                            .request()
-                            .url
-                            .newBuilder()
-                            .addQueryParameter("key", key.value)
-                            .build()
-                    )
-                    .build()
-                    .let(chain::proceed)
-            }
-            .build()
-        return Retrofit.Builder()
-            .baseUrl("https://api.weatherapi.com/v1/")
-            .addConverterFactory(
-                Json { ignoreUnknownKeys = true }
-                    .asConverterFactory("application/json".toMediaType())
-            )
-            .client(okHttpClient)
-            .build()
-            .create(WeatherAPI::class.java)
-    }
+    fun providerWeatherApi(apiFactory: APIFactory): WeatherAPI =
+        apiFactory.createRESTAPI(WeatherAPI::class.java)
 
     @Provides
     fun provideWeatherService(weatherAPI: WeatherAPI): WeatherService =

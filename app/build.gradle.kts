@@ -17,6 +17,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "WEATHER_API_KEY", "\"" + (findProperty("WEATHER_API_KEY") ?: "") + "\"")
+        buildConfigField("String", "API_BASE_URL", "\"" + (findProperty("API_BASE_URL") ?: "https://api.weatherapi.com/") + "\"")
     }
 
     buildTypes {
@@ -41,13 +42,14 @@ android {
 dependencies {
     implementation(project(":platform:screen:api"))
     implementation(project(":platform:component:plugin:api"))
+    implementation(project(":platform:navigation:navigator:kernel:implementation"))
+    implementation(project(":platform:network:rest:implementation"))
     implementation(project(":platform:persisted-storage:implementation"))
     implementation(project(":platform:subscription:service:kernel:implementation"))
     implementation(project(":entities:location:implementation"))
     implementation(project(":entities:weather:repository:implementation"))
     implementation(project(":screens:location-weather:screen"))
     implementation(project(":screens:locations:screen:implementation"))
-    implementation(project(":platform:navigation:navigator:kernel:implementation"))
 
     implementation("com.google.dagger:dagger:2.45")
     kapt("com.google.dagger:dagger-compiler:2.45")
@@ -59,4 +61,26 @@ dependencies {
     implementation("com.google.android.material:material:1.5.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0-beta01")
+
+    androidTestImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0-alpha02")
+    androidTestImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
+}
+
+tasks.register("runE2ETests") {
+    doFirst {
+        val appId = "aa.weather.app"
+        exec {
+            executable = "adb"
+            args = listOf("shell", "am", "force-stop", appId)
+            isIgnoreExitValue = false
+        }
+        exec {
+            executable = "adb"
+            args = listOf("shell", "pm", "clear", appId)
+            isIgnoreExitValue = false
+        }
+    }
+    finalizedBy("connectedDebugAndroidTest")
 }
