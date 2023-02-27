@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "aa.weather.navigator"
+    namespace = "aa.weather.navigation.navigator"
 
     defaultConfig {
         compileSdk = 33

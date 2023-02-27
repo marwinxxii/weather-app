@@ -5,6 +5,7 @@ import aa.weather.navigation.navigator.api.Destination
 import aa.weather.navigation.navigator.screen.api.ScreenNavigatorProvider
 import aa.weather.screen.api.ScreenDependenciesLocator
 import aa.weather.subscription.service.api.SubscriptionService
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.fragment.app.FragmentActivity
@@ -42,7 +43,12 @@ class RootActivity : FragmentActivity() {
         navigator.attach(
             supportFragmentManager,
             containerViewId = android.R.id.content,
-            startScreen = (savedInstanceState?.getParcelable(STATE_CURRENT_SCREEN) as? Destination),
+            startScreen = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                savedInstanceState?.getParcelable(STATE_CURRENT_SCREEN, Destination::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                (savedInstanceState?.getParcelable(STATE_CURRENT_SCREEN) as? Destination)
+            },
             lifecycleScope = lifecycleScope,
         )
         if (savedInstanceState == null) {

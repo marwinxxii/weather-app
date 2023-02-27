@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit
 internal class LatestWeatherProvider(
     private val weatherService: WeatherService,
     private val persistedStorage: PersistedStorage,
-    private val userPreferencesProvider: Any,
 ) : SubscribableDataProvider {
     override fun <T : Subscribable> observeData(subscription: Subscription<T>): Flow<T> =
         flow {
@@ -30,8 +29,12 @@ internal class LatestWeatherProvider(
                 .takeIfTopic(LatestWeather::class.java)
                 ?.dataFilters
                 ?.filterIsInstance<LocationFilter>()
-                ?.forEach { emitAll(requestData(it.location) as Flow<T>) }
-            // else report error
+                ?.forEach {
+                    // type check is ensured by generic
+                    @Suppress("UNCHECKED_CAST")
+                    emitAll(requestData(it.location) as Flow<T>)
+                }
+            // TODO else report error
         }
 
     private fun requestData(location: LocationID): Flow<LatestWeather> =

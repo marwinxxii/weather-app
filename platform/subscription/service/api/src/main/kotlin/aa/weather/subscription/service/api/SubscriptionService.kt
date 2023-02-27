@@ -6,5 +6,5 @@ import aa.weather.subscription.api.Subscription
 import kotlinx.coroutines.flow.Flow
 
 interface SubscriptionService : AppPlugin {
-    fun <T: Subscribable> observe(subscription: Subscription<T>): Flow<T>
+    fun <T : Subscribable> observe(subscription: Subscription<T>): Flow<T>
 }

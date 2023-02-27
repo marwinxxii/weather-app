@@ -1,11 +1,11 @@
 package aa.weather.app
 
 import aa.weather.component.di.AppPlugin
-import aa.weather.screen.api.ScreenDependenciesLocator
 import aa.weather.entities.weather.repository.rest.ApiKey
-import aa.weather.screens.location.WeatherScreen
+import aa.weather.screen.api.ScreenDependenciesLocator
 import aa.weather.screens.locations.LocationsScreen
-import aa.weather.screens.location.PreferencesDestination
+import aa.weather.screens.weather.PreferencesDestination
+import aa.weather.screens.weather.WeatherScreen
 import android.app.Application
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject

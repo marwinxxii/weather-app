@@ -1,15 +1,15 @@
-package aa.weather.screens.location
+package aa.weather.screens.weather
 
 import aa.weather.entities.location.LocationsService
 import aa.weather.navigation.navigator.api.Navigator
 import aa.weather.screen.api.FragmentScope
-import aa.weather.screens.location.state.LocationBoundSubscriptionService
-import aa.weather.screens.location.kernel.PluginManager
-import aa.weather.screens.location.kernel.ScreenConfiguration
 import aa.weather.screens.location.plugin.forecast.daily.DailyForecastConfiguration
 import aa.weather.screens.location.plugin.forecast.daily.DailyForecastPlugin
 import aa.weather.screens.location.plugin.header.HeaderPlugin
-import aa.weather.screens.location.state.WeatherViewModel
+import aa.weather.screens.weather.kernel.PluginManager
+import aa.weather.screens.weather.kernel.ScreenConfiguration
+import aa.weather.screens.weather.state.LocationBoundSubscriptionService
+import aa.weather.screens.weather.state.WeatherViewModel
 import aa.weather.subscription.service.api.SubscriptionService
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.ViewModelInitializer
@@ -33,7 +33,9 @@ internal interface WeatherFragmentComponent {
     @Component.Factory
     interface Factory {
         fun create(
-            @BindsInstance @Named("app") subscriptionService: SubscriptionService,
+            @BindsInstance
+            @Named("app")
+            subscriptionService: SubscriptionService,
             @BindsInstance locationsService: LocationsService,
             @BindsInstance navigator: Navigator,
         ): WeatherFragmentComponent

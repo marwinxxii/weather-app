@@ -1,15 +1,14 @@
-package aa.weather.screens.location
+package aa.weather.screens.weather
 
-import aa.weather.app.screens.weather.R
 import aa.weather.entities.location.LocationsService
 import aa.weather.navigation.navigator.screen.api.ScreenNavigatorProvider
 import aa.weather.screen.api.InjectableScreen
 import aa.weather.screen.api.ScreenDependenciesLocator
 import aa.weather.screens.location.plugin.api.PluginRenderer
 import aa.weather.screens.location.plugin.api.UIModel
-import aa.weather.screens.location.state.ScreenState
-import aa.weather.screens.location.state.ScreenUIModel
-import aa.weather.screens.location.state.WeatherViewModel
+import aa.weather.screens.weather.state.ScreenState
+import aa.weather.screens.weather.state.ScreenUIModel
+import aa.weather.screens.weather.state.WeatherViewModel
 import aa.weather.subscription.service.api.SubscriptionService
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -2,8 +2,8 @@ package aa.weather.app
 
 import aa.weather.entities.location.UserLocations
 import aa.weather.navigation.navigator.api.Navigator
-import aa.weather.screens.location.WeatherScreen
 import aa.weather.screens.locations.LocationsScreen
+import aa.weather.screens.weather.WeatherScreen
 import aa.weather.subscription.api.Subscription
 import aa.weather.subscription.service.api.SubscriptionService
 import androidx.lifecycle.ViewModel

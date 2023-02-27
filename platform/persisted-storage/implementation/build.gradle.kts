@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "aa.weather.app.persisted_storage"
+    namespace = "aa.weather.persisted.storage"
     defaultConfig {
         compileSdk = 33
         minSdk = 24

@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "aa.weather.app.screens.weather"
+    namespace = "aa.weather.screens.weather"
     defaultConfig {
         compileSdk = 33
         minSdk = 24

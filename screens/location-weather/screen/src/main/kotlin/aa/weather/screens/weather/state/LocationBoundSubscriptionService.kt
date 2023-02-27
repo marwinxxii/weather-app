@@ -1,4 +1,4 @@
-package aa.weather.screens.location.state
+package aa.weather.screens.weather.state
 
 import aa.weather.entities.location.LocationFilter
 import aa.weather.entities.location.UserLocations

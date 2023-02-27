@@ -1,7 +1,7 @@
-package aa.weather.screens.location.state
+package aa.weather.screens.weather.state
 
-import aa.weather.screens.location.kernel.PluginKey
 import aa.weather.screens.location.plugin.api.UIModel
+import aa.weather.screens.weather.kernel.PluginKey
 
 internal sealed interface ScreenState {
     object Loading : ScreenState

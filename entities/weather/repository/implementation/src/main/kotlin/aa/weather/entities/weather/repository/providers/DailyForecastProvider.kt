@@ -24,7 +24,6 @@ import java.util.concurrent.TimeUnit
 internal class DailyForecastProvider(
     private val weatherService: WeatherService,
     private val persistedStorage: PersistedStorage,
-    private val userPreferencesProvider: Any,
 ) : SubscribableDataProvider {
     override fun <T : Subscribable> observeData(subscription: Subscription<T>): Flow<T> =
         flow {
@@ -34,6 +33,8 @@ internal class DailyForecastProvider(
                 ?.dataFilters
                 ?.filterIsInstance<LocationFilter>()
                 ?.forEach {
+                    // type check is ensured by generic
+                    @Suppress("UNCHECKED_CAST")
                     emitAll(
                         requestData(
                             it.location,
@@ -41,7 +42,7 @@ internal class DailyForecastProvider(
                         ) as Flow<T>
                     )
                 }
-            // else report error
+            // TODO else report error
         }
 
     private fun requestData(
@@ -52,7 +53,7 @@ internal class DailyForecastProvider(
             persistedStorage.getOrPersist(
                 PersistenceConfiguration(
                     key = "daily-forecast-${location.value}",
-                    ttl = TimeUnit.HOURS.toMillis(4L),
+                    ttl = @Suppress("MagicNumber") TimeUnit.HOURS.toMillis(4L),
                 ),
                 DailyForecastDto.serializer(),
                 DailyForecastDto.serializer(),
@@ -80,7 +81,6 @@ internal class DailyForecastProvider(
                 ?.let(::DailyForecast)
                 ?.also { emit(it) }
         }
-
 }
 
 internal fun Double.toTemperatureModel(scale: Temperature.Scale): Temperature =

@@ -14,7 +14,11 @@ internal class UserLocationsProvider @Inject constructor(
     override fun <T : Subscribable> observeData(subscription: Subscription<T>): Flow<T> =
         subscription
             .takeIfTopic(UserLocations::class.java)
-            ?.let { service.observeUserLocations() as Flow<T> }
+            ?.let {
+                // type check is ensured by generic
+                @Suppress("UNCHECKED_CAST")
+                service.observeUserLocations() as Flow<T>
+            }
             ?: emptyFlow()
-    // else report error
+    // TODO else report error
 }

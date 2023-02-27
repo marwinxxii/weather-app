@@ -21,6 +21,8 @@ class JsonFilePersistedStorage(
     private val cacheDir = context.cacheDir.resolve("data-cache-json")
     private val json = Json
 
+    // TODO remove after error handling is introduced
+    @Suppress("TooGenericExceptionCaught", "SwallowedException")
     override suspend fun <T : Any> getPersistedData(
         key: String,
         deserializationStrategy: DeserializationStrategy<T>,

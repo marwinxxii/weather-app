@@ -1,4 +1,4 @@
-package aa.weather.screens.location
+package aa.weather.screens.weather
 
 import aa.weather.navigation.navigator.api.Destination
 

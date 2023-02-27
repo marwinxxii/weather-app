@@ -5,5 +5,5 @@ import aa.weather.subscription.api.Subscription
 import kotlinx.coroutines.flow.Flow
 
 interface SubscribableDataProvider {
-    fun <T: Subscribable> observeData(subscription: Subscription<T>): Flow<T>
+    fun <T : Subscribable> observeData(subscription: Subscription<T>): Flow<T>
 }

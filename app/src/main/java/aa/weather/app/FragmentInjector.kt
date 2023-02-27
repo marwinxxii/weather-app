@@ -1,7 +1,7 @@
 package aa.weather.app
 
-import aa.weather.screen.api.ScreenDependenciesLocator
 import aa.weather.screen.api.InjectableScreen
+import aa.weather.screen.api.ScreenDependenciesLocator
 import android.app.Activity
 import android.app.Application
 import android.content.Context

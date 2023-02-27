@@ -1,8 +1,8 @@
-package aa.weather.screens.location.state
+package aa.weather.screens.weather.state
 
 import aa.weather.navigation.navigator.api.Navigator
-import aa.weather.screens.location.PreferencesDestination
-import aa.weather.screens.location.kernel.PluginManager
+import aa.weather.screens.weather.PreferencesDestination
+import aa.weather.screens.weather.kernel.PluginManager
 import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

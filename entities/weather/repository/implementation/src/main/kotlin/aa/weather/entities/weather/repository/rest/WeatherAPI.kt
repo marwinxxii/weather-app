@@ -1,8 +1,8 @@
 package aa.weather.entities.weather.repository.rest
 
-import aa.weather.entities.weather.repository.dto.LocationCurrentWeatherDto
 import aa.weather.entities.weather.repository.WeatherService
 import aa.weather.entities.weather.repository.dto.DailyForecastDto
+import aa.weather.entities.weather.repository.dto.LocationCurrentWeatherDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 

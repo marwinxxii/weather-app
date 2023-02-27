@@ -1,6 +1,5 @@
 package aa.weather.screens.locations
 
-import aa.weather.app.screens.locations.R
 import aa.weather.entities.location.LocationsService
 import aa.weather.screen.api.InjectableScreen
 import aa.weather.screen.api.ScreenDependenciesLocator

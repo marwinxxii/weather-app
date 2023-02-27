@@ -1,4 +1,4 @@
-package aa.weather.screens.location.kernel
+package aa.weather.screens.weather.kernel
 
 import aa.weather.screens.location.plugin.api.Plugin
 import aa.weather.screens.location.plugin.api.PluginConfiguration

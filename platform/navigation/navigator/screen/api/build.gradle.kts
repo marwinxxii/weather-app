@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "aa.weather.navigator.screen.api"
+    namespace = "aa.weather.navigation.navigator.screen.api"
     defaultConfig {
         compileSdk = 33
         minSdk = 24

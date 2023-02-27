@@ -39,15 +39,15 @@ internal class DailyForecastUIStateProvider(
             ?.firstOrNull()
             ?.days
             ?.let { items ->
-                items.mapIndexed { index, it ->
+                items.mapIndexed { index, day ->
                     DayForecastUIModel(
-                        dayOfWeek = Instant.ofEpochSecond(it.timestamp.toLong()).let {
+                        dayOfWeek = Instant.ofEpochSecond(day.timestamp.toLong()).let {
                             DateTimeFormatter.ofPattern("eee")
                                 .format(it.atZone(ZoneId.systemDefault()))
                         },
-                        temperatureMin = it.temperatureMin.formatted,
-                        temperatureMax = it.temperatureMax.formatted,
-                        weatherConditions = it.weatherConditions,
+                        temperatureMin = day.temperatureMin.formatted,
+                        temperatureMax = day.temperatureMax.formatted,
+                        weatherConditions = day.weatherConditions,
                         showDivider = index < items.size - 1,
                     )
                 }

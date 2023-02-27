@@ -31,7 +31,9 @@ internal interface AppComponent {
     interface Factory {
         fun create(
             @BindsInstance context: Context,
-            @BindsInstance @Named("IO") ioDispatcher: CoroutineDispatcher,
+            @BindsInstance
+            @Named("IO")
+            ioDispatcher: CoroutineDispatcher,
             @BindsInstance apiKey: ApiKey,
             @BindsInstance screens: NavigationPlugins,
         ): AppComponent

@@ -1,4 +1,5 @@
 package aa.weather.entities.weather.repository
+
 import aa.weather.entities.weather.DailyForecast
 import aa.weather.entities.weather.LatestWeather
 import aa.weather.entities.weather.repository.providers.DailyForecastProvider
@@ -6,8 +7,8 @@ import aa.weather.entities.weather.repository.providers.LatestWeatherProvider
 import aa.weather.entities.weather.repository.rest.ApiKey
 import aa.weather.entities.weather.repository.rest.WeatherAPI
 import aa.weather.persisted.storage.api.PersistedStorage
-import aa.weather.subscription.service.plugin.api.SubscribableDataProviderKey
 import aa.weather.subscription.service.plugin.api.SubscribableDataProvider
+import aa.weather.subscription.service.plugin.api.SubscribableDataProviderKey
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -31,7 +32,6 @@ private object PrivateDataModule {
         LatestWeatherProvider(
             weatherService,
             persistedStorage,
-            ""
         )
 
     @Provides
@@ -44,7 +44,6 @@ private object PrivateDataModule {
         DailyForecastProvider(
             weatherService,
             persistedStorage,
-            ""
         )
 
     @OptIn(ExperimentalSerializationApi::class)

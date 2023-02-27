@@ -2,7 +2,7 @@ package aa.weather.screens.location.plugin.api
 
 import androidx.compose.runtime.Composable
 
-interface PluginRenderer<T: UIModel> {
+interface PluginRenderer<T : UIModel> {
     @Composable
     fun render(model: T)
 
