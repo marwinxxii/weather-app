@@ -39,8 +39,7 @@ internal interface AppComponent {
             ioDispatcher: CoroutineDispatcher,
             @BindsInstance apiConfiguration: () -> APIConfiguration,
             @BindsInstance screens: NavigationPlugins,
-            @BindsInstance
-            localeProvider: LocaleProvider,
+            @BindsInstance localeProvider: LocaleProvider,
         ): AppComponent
     }
 }

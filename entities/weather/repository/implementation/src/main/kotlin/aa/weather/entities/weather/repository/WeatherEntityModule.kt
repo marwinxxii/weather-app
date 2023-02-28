@@ -31,10 +31,6 @@ private object PrivateDataModule {
     @Singleton
     fun providerWeatherApi(apiFactory: APIFactory): WeatherAPI =
         apiFactory.createRESTAPI(WeatherAPI::class.java)
-
-    @Provides
-    fun provideWeatherService(weatherAPI: WeatherAPI): WeatherService =
-        weatherAPI
 }
 
 @Module(includes = [PrivateDataModule::class])
