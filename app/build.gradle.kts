@@ -49,7 +49,7 @@ dependencies {
     implementation(project(":platform:subscription:service:kernel:implementation"))
     implementation(project(":entities:location:implementation"))
     implementation(project(":entities:weather:repository:implementation"))
-    implementation(project(":screens:location-weather:screen"))
+    implementation(project(":screens:location-weather:screen:implementation"))
     implementation(project(":screens:locations:screen:implementation"))
 
     implementation("com.google.dagger:dagger:2.45")
