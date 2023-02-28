@@ -6,7 +6,6 @@ import aa.weather.entities.weather.repository.providers.DailyForecastProvider
 import aa.weather.entities.weather.repository.providers.LatestWeatherProvider
 import aa.weather.entities.weather.repository.rest.WeatherAPI
 import aa.weather.network.rest.api.APIFactory
-import aa.weather.persisted.storage.api.PersistedStorage
 import aa.weather.subscription.service.plugin.api.SubscribableDataProvider
 import aa.weather.subscription.service.plugin.api.SubscribableDataProviderKey
 import dagger.Module
@@ -19,26 +18,14 @@ private object PrivateDataModule {
     @Provides
     @IntoMap
     @SubscribableDataProviderKey(LatestWeather::class)
-    fun provideLatestWeatherProvider(
-        weatherService: WeatherService,
-        persistedStorage: PersistedStorage,
-    ): SubscribableDataProvider =
-        LatestWeatherProvider(
-            weatherService,
-            persistedStorage,
-        )
+    fun provideLatestWeatherProvider(instance: LatestWeatherProvider): SubscribableDataProvider =
+        instance
 
     @Provides
     @IntoMap
     @SubscribableDataProviderKey(DailyForecast::class)
-    fun provideDailyForecastProvider(
-        weatherService: WeatherService,
-        persistedStorage: PersistedStorage,
-    ): SubscribableDataProvider =
-        DailyForecastProvider(
-            weatherService,
-            persistedStorage,
-        )
+    fun provideDailyForecastProvider(instance: DailyForecastProvider): SubscribableDataProvider =
+        instance
 
     @Provides
     @Singleton

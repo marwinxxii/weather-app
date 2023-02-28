@@ -40,11 +40,12 @@ android {
 }
 
 dependencies {
-    implementation(project(":platform:screen:api"))
     implementation(project(":platform:component:plugin:api"))
+    implementation(project(":platform:i18n:api"))
     implementation(project(":platform:navigation:navigator:kernel:implementation"))
     implementation(project(":platform:network:rest:implementation"))
     implementation(project(":platform:persisted-storage:implementation"))
+    implementation(project(":platform:screen:api"))
     implementation(project(":platform:subscription:service:kernel:implementation"))
     implementation(project(":entities:location:implementation"))
     implementation(project(":entities:weather:repository:implementation"))

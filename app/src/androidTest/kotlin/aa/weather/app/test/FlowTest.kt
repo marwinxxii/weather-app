@@ -44,6 +44,7 @@ private fun RESTMockRule.setupMocks() {
         queryParameters = mapOf(
             "key" to "TEST_API_KEY",
             "q" to "Berlin",
+            "lang" to "en",
         ),
         responseFile = "mock_berlin_latest_weather.json",
     )
@@ -53,6 +54,7 @@ private fun RESTMockRule.setupMocks() {
             "key" to "TEST_API_KEY",
             "q" to "Berlin",
             "days" to "14",
+            "lang" to "en",
         ),
         responseFile = "mock_berlin_forecast.json",
     )
@@ -61,6 +63,7 @@ private fun RESTMockRule.setupMocks() {
         queryParameters = mapOf(
             "key" to "TEST_API_KEY",
             "q" to "Stockholm",
+            "lang" to "en",
         ),
         responseFile = "mock_stockholm_latest_weather.json",
     )
@@ -70,6 +73,7 @@ private fun RESTMockRule.setupMocks() {
             "key" to "TEST_API_KEY",
             "q" to "Stockholm",
             "days" to "14",
+            "lang" to "en",
         ),
         responseFile = "mock_stockholm_forecast.json",
     )

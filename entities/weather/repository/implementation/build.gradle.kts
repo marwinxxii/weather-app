@@ -11,6 +11,7 @@ dependencies {
     implementation(project(":entities:location:api"))
     implementation(project(":platform:persisted-storage:api"))
     implementation(project(":platform:network:rest:api"))
+    implementation(project(":platform:i18n:api"))
 
     kapt("com.google.dagger:dagger-compiler:2.45")
     implementation("com.google.dagger:dagger:2.45")

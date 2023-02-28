@@ -35,15 +35,19 @@ private class WeatherRobotImpl(private val device: UiDevice) : WeatherRobot {
 
         scrollable
             .getChild(UiSelector().text(city))
-            .also { assertTrue(it.exists()) }
+            .also { assertTrue("City view is shown with text $city", it.exists()) }
 
         scrollable
             .getChild(UiSelector().text(temperature))
-            .also { assertTrue(it.exists()) }
+            .also {
+                assertTrue("Temperature view is shown with text $temperature", it.exists())
+            }
 
         scrollable
             .getChild(UiSelector().text(conditions))
-            .also { assertTrue(it.exists()) }
+            .also {
+                assertTrue("Conditions view is shown with text $conditions", it.exists())
+            }
     }
 
     override fun clickPreferences() {

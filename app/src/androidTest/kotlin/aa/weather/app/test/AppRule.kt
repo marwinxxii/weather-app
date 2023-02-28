@@ -3,7 +3,6 @@ package aa.weather.app.test
 import aa.weather.app.WeatherApp
 import aa.weather.network.rest.api.APIConfiguration
 import android.content.Intent
-import android.util.Log
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
@@ -14,6 +13,7 @@ import org.junit.rules.RuleChain
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
+import java.util.Locale
 
 class AppRule : TestRule {
     val mockRule = RESTMockRule()
@@ -37,9 +37,12 @@ class AppRule : TestRule {
 
     fun launch() {
         val app = ApplicationProvider.getApplicationContext<WeatherApp>()
-        app.apiConfiguration = APIConfiguration(
-            key = "TEST_API_KEY",
-            baseUrl = mockRule.baseUrl,
+        app.delegate.injectDependencies(
+            apiConfiguration = APIConfiguration(
+                key = "TEST_API_KEY",
+                baseUrl = mockRule.baseUrl,
+            ),
+            locale = Locale.ENGLISH,
         )
         val packageName = app.packageName
         val instrumentation = InstrumentationRegistry.getInstrumentation()
@@ -54,10 +57,6 @@ class AppRule : TestRule {
             Until.hasObject(By.pkg(packageName).depth(0)),
             200
         )
-    }
-
-    private fun log(message: String) {
-        Log.d("AppRule", message)
     }
 
     private fun setAnimationsScale(scale: Int) {

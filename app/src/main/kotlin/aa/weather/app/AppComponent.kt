@@ -2,6 +2,7 @@ package aa.weather.app
 
 import aa.weather.entities.location.LocationEntityModule
 import aa.weather.entities.weather.repository.WeatherEntityModule
+import aa.weather.i18n.api.LocaleProvider
 import aa.weather.navigation.navigator.NavigationPlugins
 import aa.weather.navigation.navigator.NavigatorModule
 import aa.weather.network.rest.APIModule
@@ -27,7 +28,7 @@ import javax.inject.Singleton
     ]
 )
 internal interface AppComponent {
-    fun inject(app: WeatherApp)
+    fun inject(app: AppDelegate)
 
     @Component.Factory
     interface Factory {
@@ -38,6 +39,8 @@ internal interface AppComponent {
             ioDispatcher: CoroutineDispatcher,
             @BindsInstance apiConfiguration: () -> APIConfiguration,
             @BindsInstance screens: NavigationPlugins,
+            @BindsInstance
+            localeProvider: LocaleProvider,
         ): AppComponent
     }
 }

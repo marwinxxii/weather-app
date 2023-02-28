@@ -9,6 +9,7 @@ import aa.weather.entities.weather.LocationDailyForecast
 import aa.weather.entities.weather.Temperature
 import aa.weather.entities.weather.repository.WeatherService
 import aa.weather.entities.weather.repository.dto.DailyForecastDto
+import aa.weather.i18n.api.LocaleProvider
 import aa.weather.persisted.storage.api.PersistedStorage
 import aa.weather.persisted.storage.api.PersistenceConfiguration
 import aa.weather.persisted.storage.api.getOrPersist
@@ -20,10 +21,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-internal class DailyForecastProvider(
+internal class DailyForecastProvider @Inject constructor(
     private val weatherService: WeatherService,
     private val persistedStorage: PersistedStorage,
+    private val localeProvider: LocaleProvider,
 ) : SubscribableDataProvider {
     override fun <T : Subscribable> observeData(subscription: Subscription<T>): Flow<T> =
         flow {
@@ -58,7 +61,7 @@ internal class DailyForecastProvider(
                 DailyForecastDto.serializer(),
                 DailyForecastDto.serializer(),
             ) {
-                weatherService.getForecast(location.value, args.daysCount)
+                weatherService.getForecast(location, args.daysCount, localeProvider.locale.language)
             }
                 ?.let { forecast ->
                     LocationDailyForecast(
