@@ -7,7 +7,6 @@ import aa.weather.screen.api.ScreenDependenciesLocator
 import aa.weather.subscription.service.api.SubscriptionService
 import android.os.Build
 import android.os.Bundle
-import android.os.Parcelable
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -44,10 +43,10 @@ class RootActivity : FragmentActivity() {
             supportFragmentManager,
             containerViewId = android.R.id.content,
             startScreen = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                savedInstanceState?.getParcelable(STATE_CURRENT_SCREEN, Destination::class.java)
+                savedInstanceState?.getSerializable(STATE_CURRENT_SCREEN, Destination::class.java)
             } else {
                 @Suppress("DEPRECATION")
-                (savedInstanceState?.getParcelable(STATE_CURRENT_SCREEN) as? Destination)
+                (savedInstanceState?.getSerializable(STATE_CURRENT_SCREEN) as? Destination)
             },
             lifecycleScope = lifecycleScope,
         )
@@ -60,7 +59,6 @@ class RootActivity : FragmentActivity() {
         super.onSaveInstanceState(outState)
         // move to the view model perhaps
         navigator.currentScreen
-            ?.let { it as? Parcelable }
-            ?.also { outState.putParcelable(STATE_CURRENT_SCREEN, it) }
+            ?.also { outState.putSerializable(STATE_CURRENT_SCREEN, it) }
     }
 }

@@ -1,3 +1,4 @@
 package aa.weather.navigation.navigator.api
 
-interface Destination
+// class type is erased in Parcelable
+interface Destination : java.io.Serializable
