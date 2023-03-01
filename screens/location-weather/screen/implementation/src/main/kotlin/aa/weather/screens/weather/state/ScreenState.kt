@@ -9,6 +9,8 @@ internal sealed interface ScreenState {
     data class Loaded(
         val items: List<ScreenUIModel>,
     ) : ScreenState
+
+    data class Error(val message: String) : ScreenState
 }
 
 internal data class ScreenUIModel(

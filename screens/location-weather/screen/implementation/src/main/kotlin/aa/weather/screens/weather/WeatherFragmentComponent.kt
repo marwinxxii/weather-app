@@ -1,6 +1,7 @@
 package aa.weather.screens.weather
 
 import aa.weather.entities.location.LocationsService
+import aa.weather.i18n.api.TranslationProvider
 import aa.weather.navigation.navigator.api.Navigator
 import aa.weather.screen.api.FragmentScope
 import aa.weather.screens.location.plugin.forecast.daily.DailyForecastConfiguration
@@ -38,6 +39,7 @@ internal interface WeatherFragmentComponent {
             subscriptionService: SubscriptionService,
             @BindsInstance locationsService: LocationsService,
             @BindsInstance navigator: Navigator,
+            @BindsInstance translationProvider: TranslationProvider,
         ): WeatherFragmentComponent
     }
 }

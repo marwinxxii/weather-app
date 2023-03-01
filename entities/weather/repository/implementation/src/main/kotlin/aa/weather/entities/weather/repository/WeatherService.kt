@@ -11,6 +11,8 @@ import javax.inject.Inject
 internal class WeatherService @Inject constructor(
     private val weatherAPI: WeatherAPI,
 ) {
+    // these are expected exceptions
+    @Suppress("SwallowedException")
     suspend fun getLatestWeather(
         location: LocationID,
         language: String,
@@ -23,6 +25,8 @@ internal class WeatherService @Inject constructor(
             null
         }
 
+    // these are expected exceptions
+    @Suppress("SwallowedException")
     suspend fun getForecast(
         location: LocationID,
         daysCount: Int,

@@ -34,6 +34,16 @@ class RESTMockRule : ExternalResource() {
         dispatcher.addResponse(ExpectedRequest(path, queryParameters), response)
     }
 
+    fun removeAllMocks() = apply {
+        dispatcher.removeAllMocks()
+    }
+
+    fun addResponse(path: String, httpCode: Int) = apply {
+        val response = MockResponse()
+            .setResponseCode(httpCode)
+        dispatcher.addResponse(ExpectedRequest(path, queryParameters = null), response)
+    }
+
     private fun readResource(fileName: String): String =
         javaClass.classLoader!!
             .getResourceAsStream(fileName)
@@ -43,7 +53,7 @@ class RESTMockRule : ExternalResource() {
 
 private data class ExpectedRequest(
     val path: String,
-    val queryParameters: Map<String, String>,
+    val queryParameters: Map<String, String>?,
 )
 
 private class MockDispatcher : Dispatcher() {
@@ -53,7 +63,7 @@ private class MockDispatcher : Dispatcher() {
         val requestQueryParameters = request.queryParameters
         return mocks.entries.firstOrNull { (expected, _) ->
             expected.path == request.requestUrl?.encodedPath &&
-                expected.queryParameters == requestQueryParameters
+                (expected.queryParameters?.let { it == requestQueryParameters } ?: true)
         }
             ?.value
             ?: error("No mock found for $request in $mocks")
@@ -61,6 +71,10 @@ private class MockDispatcher : Dispatcher() {
 
     fun addResponse(request: ExpectedRequest, response: MockResponse) = apply {
         mocks[request] = response
+    }
+
+    fun removeAllMocks() {
+        mocks.keys.clear()
     }
 }
 

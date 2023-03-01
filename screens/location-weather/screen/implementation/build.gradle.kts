@@ -29,6 +29,7 @@ dependencies {
     api(project(":platform:navigation:plugin:api"))
     implementation(project(":entities:location:api"))
     implementation(project(":entities:weather:api"))
+    implementation(project(":platform:i18n:api"))
     implementation(project(":platform:screen:api"))
     implementation(project(":platform:subscription:service:api"))
     implementation(project(":platform:navigation:navigator:screen:api"))

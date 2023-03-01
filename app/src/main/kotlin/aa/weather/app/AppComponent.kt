@@ -2,6 +2,7 @@ package aa.weather.app
 
 import aa.weather.entities.location.LocationEntityModule
 import aa.weather.entities.weather.repository.WeatherEntityModule
+import aa.weather.i18n.I18NModule
 import aa.weather.i18n.api.LocaleProvider
 import aa.weather.navigation.navigator.NavigationPlugins
 import aa.weather.navigation.navigator.NavigatorModule
@@ -25,6 +26,7 @@ import javax.inject.Singleton
         SubscriptionServiceModule::class,
         NavigatorModule::class,
         APIModule::class,
+        I18NModule::class,
     ]
 )
 internal interface AppComponent {

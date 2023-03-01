@@ -43,7 +43,7 @@ internal class LocationsViewModel @Inject constructor(
                 name = "Stockholm"
             ),
             Location(
-                id = LocationID("New%2FYork"),
+                id = LocationID("New York"),
                 name = "New York"
             ),
         )

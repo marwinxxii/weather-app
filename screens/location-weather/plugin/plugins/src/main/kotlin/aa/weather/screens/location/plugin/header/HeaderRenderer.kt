@@ -1,6 +1,7 @@
 package aa.weather.screens.location.plugin.header
 
 import aa.weather.screens.location.plugin.api.PluginRenderer
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 internal class HeaderRenderer : PluginRenderer<HeaderUIModel> {
+    @SuppressLint("ComposableNaming")
     @Composable
     override fun render(model: HeaderUIModel) {
         Column(

@@ -70,17 +70,20 @@ internal class LocationsFragment : Fragment(), InjectableScreen {
         (view as ComposeView).setContent {
             MaterialTheme {
                 val state by vm.state.collectAsStateWithLifecycle()
-                renderState(state)
+                Content(state, vm::onLocationSelected)
             }
         }
     }
+}
 
-    @Composable
-    private fun renderState(state: ScreenState) {
-        when (state) {
-            is ScreenState.Loading -> Loading()
-            is ScreenState.Loaded -> Loaded(state, vm::onLocationSelected)
-        }
+@Composable
+private fun Content(
+    state: ScreenState,
+    onLocationSelected: (LocationUIModel) -> Unit,
+) {
+    when (state) {
+        is ScreenState.Loading -> Loading()
+        is ScreenState.Loaded -> Loaded(state, onLocationSelected)
     }
 }
 
