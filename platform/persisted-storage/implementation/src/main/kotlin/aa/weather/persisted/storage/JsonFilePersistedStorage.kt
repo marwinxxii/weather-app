@@ -6,6 +6,7 @@ import android.content.Context
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationStrategy
@@ -26,18 +27,19 @@ class JsonFilePersistedStorage(
     override suspend fun <T : Any> getPersistedData(
         key: String,
         deserializationStrategy: DeserializationStrategy<T>,
-    ): T? {
-        return resolveFile(key)
-            .takeIf { it.exists() }
-            ?.let {
-                try {
-                    json.decodeFromStream(deserializationStrategy, it.inputStream())
-                } catch (e: Exception) {
-                    it.delete()
-                    null
+    ): T? =
+        withContext(dispatcher) {
+            resolveFile(key)
+                .takeIf { it.exists() }
+                ?.let {
+                    try {
+                        json.decodeFromStream(deserializationStrategy, it.inputStream())
+                    } catch (e: Exception) {
+                        it.delete()
+                        null
+                    }
                 }
-            }
-    }
+        }
 
     private fun resolveFile(key: String) =
         cacheDir.resolve("$key.json")
